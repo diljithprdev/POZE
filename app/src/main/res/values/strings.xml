@@ -36,7 +36,7 @@
 
     <string name="home_headline">Reference Image Overlay Tool</string>
     <string name="home_sub">Float a reference over any app and align your shot.</string>
-    <string name="home_hint">Pick a reference, then drag the blue bubble over the camera app.</string>
+    <string name="home_hint">Pick a reference, then tap the bubble and drag the photo over your camera.</string>
     <string name="brand_wordmark">POZE</string>
 
     <string name="menu_title">POZE</string>

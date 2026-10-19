@@ -15,7 +15,7 @@ Float a reference photo over any app — usually the camera — and align your s
 
 <br/>
 
-[![Download the APK](https://img.shields.io/badge/Download-POZE%201.0-4E9EA6?style=for-the-badge&logo=android&logoColor=white)](../../releases/latest)
+[![Download the APK](https://img.shields.io/badge/Download-POZE%201.0.1-4E9EA6?style=for-the-badge&logo=android&logoColor=white)](../../releases/latest)
 
 </div>
 
@@ -23,9 +23,9 @@ Float a reference photo over any app — usually the camera — and align your s
 
 ## Get the APK
 
-**[Download POZE 1.0](../../releases/latest)** — signed release APK, 4.6 MB, no Play Store needed.
+**[Download POZE 1.0.1](../../releases/latest)** — signed release APK, 4.6 MB, no Play Store needed.
 
-1. Open the release page on your phone and download `POZE-1.0.apk`
+1. Open the release page on your phone and download `POZE-1.0.1.apk`
 2. Allow the install when Android asks — *Settings → Apps → Special access → Install unknown apps*
 3. Open POZE, grant **Display over other apps**, pick a reference, then tap the floating bubble
 
@@ -181,7 +181,6 @@ Next:
 
 ## Known notes
 
-- The gallery screenshot hint on the home screen still says "drag the blue bubble" while the bubble is dark slate — copy fix pending.
 - The reference is deliberately pinned to the device on rotation, so turning the phone does not turn the reference with it. Reset re-centres it if you want to re-frame.
 
 ## Author
