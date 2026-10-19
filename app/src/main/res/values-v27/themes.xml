@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.POZE" parent="Theme.MaterialComponents.NoActionBar">
+        <item name="colorPrimary">@color/poze_accent</item>
+        <item name="colorPrimaryVariant">@color/poze_accent_dark</item>
+        <item name="colorOnPrimary">@color/poze_on_accent</item>
+        <item name="colorSecondary">@color/poze_accent_soft</item>
+        <item name="colorOnSecondary">@color/poze_on_accent</item>
+        <item name="colorAccent">@color/poze_accent</item>
+        <item name="android:colorBackground">@color/poze_home_base</item>
+        <item name="android:statusBarColor">@color/poze_home_base</item>
+        <item name="android:navigationBarColor">@color/poze_home_end</item>
+        <item name="android:windowBackground">@drawable/bg_home_base</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar">false</item>
+        <item name="android:windowActivityTransitions">true</item>
+    </style>
+</resources>

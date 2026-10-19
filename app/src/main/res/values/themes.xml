@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+        POZE theme — Deep Calm (dark, muted, flat).
+        No gradients: the window background is a single solid surface.
+    -->
+    <style name="Theme.POZE" parent="Theme.MaterialComponents.NoActionBar">
+        <item name="colorPrimary">@color/poze_accent</item>
+        <item name="colorPrimaryVariant">@color/poze_accent_dark</item>
+        <item name="colorOnPrimary">@color/poze_on_accent</item>
+        <item name="colorSecondary">@color/poze_accent_soft</item>
+        <item name="colorOnSecondary">@color/poze_on_accent</item>
+        <item name="colorAccent">@color/poze_accent</item>
+        <item name="android:colorBackground">@color/poze_home_base</item>
+        <item name="android:statusBarColor">@color/poze_home_base</item>
+        <item name="android:navigationBarColor">@color/poze_home_end</item>
+        <item name="android:windowBackground">@drawable/bg_home_base</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowActivityTransitions">true</item>
+    </style>
+
+    <!-- Window theme for the custom POZE dialogs (floating, transparent, dimmed). -->
+    <style name="Theme.POZE.Dialog" parent="@android:style/Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <!-- Dimming is drawn and animated by the dialog's own scrim view. -->
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:windowMinWidthMajor">88%</item>
+        <item name="android:windowMinWidthMinor">92%</item>
+        <item name="android:colorAccent">@color/poze_accent_soft</item>
+    </style>
+
+    <!-- Overlay window transitions (floating tool menu grows from the bubble). -->
+    <style name="Animation.POZE.OverlayMenu" parent="@android:style/Animation">
+        <item name="android:activityOpenEnterAnimation">@anim/overlay_menu_enter</item>
+        <item name="android:activityOpenExitAnimation">@anim/overlay_menu_exit</item>
+        <item name="android:activityCloseEnterAnimation">@anim/overlay_menu_enter</item>
+        <item name="android:activityCloseExitAnimation">@anim/overlay_menu_exit</item>
+    </style>
+
+    <!-- Icon button used inside the floating tool bar. -->
+    <style name="ToolBarIcon">
+        <item name="android:layout_width">@dimen/touch_segment</item>
+        <item name="android:layout_height">@dimen/touch_segment</item>
+        <item name="android:background">@drawable/ripple_circle</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:scaleType">fitCenter</item>
+        <item name="android:tint">@color/poze_on_surface_dim</item>
+    </style>
+</resources>

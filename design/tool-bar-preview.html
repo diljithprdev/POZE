@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>POZE — docked tool bar (final spec)</title>
+<style>
+  :root{
+    --home-base:#12161C; --menu-bg:#1B2129; --menu-bg-alt:#212831;
+    --menu-border-soft:rgba(255,255,255,.165); --divider:rgba(255,255,255,.12);
+    --accent:#4E9EA6; --accent-soft:#77C0C6; --on-accent:#0E131A;
+    --on-surface:#ECE9E2; --on-surface-dim:#A6AFB7; --tertiary:#79828B;
+    --sand:#DCC9A8; --red:#B85B4F; --red-soft:#E7B3AB; --icon-bg:#141A22;
+    --ease:cubic-bezier(.2,.7,.2,1);
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    --serif:Georgia,"Times New Roman",serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#0B0E12;color:var(--on-surface);font-family:var(--sans);padding:32px;display:flex;flex-direction:column;gap:30px;align-items:center}
+  h1{font-family:var(--serif);letter-spacing:.14em;color:var(--sand);font-size:24px;font-weight:700;text-align:center}
+  h2{font-family:var(--serif);letter-spacing:.1em;color:var(--sand);font-size:16px;font-weight:700;text-align:center;margin-top:4px}
+  .cap{font-size:12px;letter-spacing:.12em;color:var(--tertiary);text-transform:uppercase;text-align:center}
+  .hint{font-size:12px;color:var(--on-surface-dim);text-align:center;max-width:780px;line-height:1.55}
+  .row{display:flex;gap:28px;flex-wrap:wrap;justify-content:center;align-items:flex-start}
+  .stage{position:relative;width:900px;max-width:96vw;height:300px;border-radius:24px;background:var(--home-base);border:1px solid #232a33;overflow:hidden}
+  .stage .ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#333c48;font-size:13px;letter-spacing:.2em;text-transform:uppercase}
+  .dock{position:absolute;display:flex;align-items:center;gap:12px}
+
+  .bubble{width:56px;height:56px;border-radius:50%;background:var(--icon-bg);display:flex;align-items:center;justify-content:center;box-shadow:0 10px 26px rgba(0,0,0,.55);cursor:pointer;flex:0 0 auto;transition:transform .12s var(--ease),box-shadow .2s var(--ease);z-index:2}
+  .bubble:active{transform:scale(.94)}
+  .bubble.on{box-shadow:0 0 0 3px rgba(78,158,166,.35),0 10px 26px rgba(0,0,0,.55)}
+  .bubble .wm{font-family:var(--serif);font-weight:700;color:var(--sand);font-size:15px;letter-spacing:.06em}
+
+  /* ====== TOOL BAR with grow/animated pill background ====== */
+  .tbar{position:relative;display:inline-flex;align-items:center}
+  .pillbg{position:absolute;inset:0;border-radius:999px;background:var(--menu-bg);border:1px solid var(--menu-border-soft);box-shadow:0 18px 44px rgba(0,0,0,.55)}
+  .tbrow{position:relative;z-index:1;display:flex;align-items:center;gap:4px;height:56px;padding:0 8px}
+  .tbar .tbrow>*{opacity:0}
+
+  /* reveal: A · grow from the bubble */
+  .tbar[data-anim="grow"] .pillbg{transform-origin:left center;transform:scaleX(.26);opacity:0;transition:transform .36s var(--ease),opacity .22s var(--ease)}
+  .dock.open .tbar[data-anim="grow"] .pillbg{transform:scaleX(1);opacity:1}
+
+  /* reveal: B · slide out */
+  .tbar[data-anim="slide"]{transform:translateX(-20px);opacity:0;transition:transform .32s var(--ease),opacity .24s var(--ease)}
+  .dock.open .tbar[data-anim="slide"]{transform:none;opacity:1}
+
+  /* reveal: C · unfold (clip from bubble side) */
+  .tbar[data-anim="unfold"] .pillbg{clip-path:inset(0 72% 0 0 round 999px);transition:clip-path .38s var(--ease)}
+  .dock.open .tbar[data-anim="unfold"] .pillbg{clip-path:inset(0 0 0 0 round 999px)}
+
+  @keyframes tbIn{from{opacity:0;transform:translateX(-9px) scale(.88)}to{opacity:1;transform:none}}
+  .dock.open .tbar .tbrow>*{animation:tbIn .26s var(--ease) backwards;animation-delay:var(--d,0ms)}
+
+  /* flip origin when the bar opens to the left */
+  .dock.left{flex-direction:row-reverse}
+  .dock.left .tbar[data-anim="grow"] .pillbg{transform-origin:right center}
+
+  .tbtn{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--on-surface-dim);position:relative;cursor:pointer;transition:transform .12s var(--ease),background .16s var(--ease),color .16s var(--ease)}
+  .tbtn:hover{background:var(--menu-bg-alt)}
+  .tbtn:active{transform:scale(.9)}
+  .tbtn.active{background:var(--accent);color:var(--on-accent)}
+  .tbtn.nav{color:var(--accent-soft)}
+  .tbtn.danger{color:var(--red-soft)}
+  .tbtn.danger:hover{background:#2E2322}
+  .tbtn svg{width:22px;height:22px}
+  .bdot{position:absolute;top:8px;right:8px;width:7px;height:7px;border-radius:50%;background:var(--accent-soft)}
+  .vd{width:1px;height:26px;background:var(--divider);margin:0 6px;flex:0 0 auto}
+
+  /* inline opacity expander */
+  .slidewrap{display:flex;align-items:center;gap:10px;overflow:hidden;max-width:0;opacity:1}
+  .tbar.expand .slidewrap{max-width:200px;margin:0 8px}
+  .track{width:150px;height:4px;border-radius:4px;background:#39424C;position:relative}
+  .track .fill{position:absolute;inset:0;background:var(--accent);border-radius:4px}
+  .track .thumb{position:absolute;right:-8px;top:50%;transform:translateY(-50%);width:16px;height:16px;border-radius:50%;background:#fff;border:3px solid var(--accent)}
+  .pv{font-size:12px;color:var(--on-surface-dim);width:34px;text-align:right}
+
+  .btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+  .btn{background:var(--menu-bg);border:1px solid var(--menu-border-soft);color:var(--on-surface);border-radius:12px;padding:9px 16px;font-size:13px;cursor:pointer;font-family:var(--sans)}
+  .btn:hover{background:var(--menu-bg-alt)}
+
+  .vc{display:flex;flex-direction:column;gap:12px;align-items:center}
+  .vc .meta{text-align:center}
+  .vc .meta .t{font-size:15px;font-weight:700}
+  .vc .meta .d{font-size:12px;color:var(--on-surface-dim);margin-top:4px;line-height:1.4;max-width:420px}
+  .tag{font-size:10px;letter-spacing:.1em;color:var(--accent-soft);border:1px solid var(--menu-border-soft);border-radius:20px;padding:3px 10px;display:inline-block;margin-top:8px}
+  .mini{height:170px}
+  code{background:#1B2129;border:1px solid var(--menu-border-soft);border-radius:6px;padding:1px 6px;font-size:11px}
+</style>
+</head>
+<body>
+
+  <h1>Tool bar — final spec</h1>
+  <div class="cap">Bubble near left edge · opens right · Variant B (opacity expands inline)</div>
+
+  <!-- ============ INTERACTIVE ============ -->
+  <div class="stage">
+    <div class="ph">app behind the overlay</div>
+    <div class="dock right open" id="dock" style="left:32px;top:122px">
+      <div class="bubble on" id="bubble"><span class="wm">POZE</span></div>
+      <div class="tbar expand" id="tbar" data-anim="grow">
+        <div class="pillbg"></div>
+        <div class="tbrow">
+          <div class="tbtn active" title="Lock (locked)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10.5" width="14" height="9.5" rx="2"/><path d="M8.5 10.5V7.5a3.5 3.5 0 017 0v3"/></svg></div>
+          <div class="tbtn active" title="Grid on"><span class="bdot"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3.5" width="17" height="17" rx="3"/><path d="M3.5 12h17M12 3.5v17"/></svg></div>
+          <div class="tbtn" title="Rotate 90°"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 12a8.5 8.5 0 11-2.8-6.3"/><path d="M20.5 4v5h-5"/></svg></div>
+          <div class="tbtn active" id="opBtn" title="Opacity"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 3.5a8.5 8.5 0 010 17z" fill="currentColor" stroke="none"/></svg></div>
+          <div class="slidewrap"><div class="track"><div class="fill"></div><div class="thumb"></div></div><span class="pv">80%</span></div>
+          <div class="vd"></div>
+          <div class="tbtn nav" title="Back to gallery"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4.5" width="17" height="15" rx="2.5"/><circle cx="9" cy="10" r="1.6"/><path d="M4 17.5l5-5 4 4 3-3 4 3.5"/></svg></div>
+          <div class="tbtn" title="Reset"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 12a8.5 8.5 0 1010-8.3"/><path d="M3.5 4.5v5h5"/></svg></div>
+          <div class="tbtn" title="Close menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></div>
+          <div class="tbtn danger" title="Stop overlay"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"><path d="M12 3v8"/><path d="M6.4 6.4a8 8 0 1011.2 0"/></svg></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="btns">
+    <button class="btn" id="replay">Replay reveal</button>
+    <button class="btn" id="toggle">Toggle open / closed</button>
+  </div>
+  <div class="hint">Bubble: <b>Lock</b> · <b>Grid</b> · <b>Rotate</b> · <b>Opacity</b> (+ inline slider) — then <b>Gallery</b> · <b>Reset</b> · <b>Close</b> · <b>Stop</b>.</div>
+
+  <!-- ============ ANIMATION OPTIONS ============ -->
+  <h2>Reveal animation options</h2>
+  <div class="row">
+
+    <div class="vc">
+      <div class="meta"><div class="t">1 · Grow from bubble</div><div class="d">Pill scales out from the bubble edge; icons arrive one-by-one. Feels physically attached to the bubble.</div><div class="tag">RECOMMENDED</div></div>
+      <div class="stage mini">
+        <div class="ph">app</div>
+        <div class="dock right open" data-mini style="left:24px;top:57px">
+          <div class="bubble"><span class="wm">POZE</span></div>
+          <div class="tbar" data-anim="grow">
+            <div class="pillbg"></div>
+            <div class="tbrow">
+              <div class="tbtn active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10.5" width="14" height="9.5" rx="2"/><path d="M8.5 10.5V7.5a3.5 3.5 0 017 0v3"/></svg></div>
+              <div class="tbtn active"><span class="bdot"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3.5" width="17" height="17" rx="3"/><path d="M3.5 12h17M12 3.5v17"/></svg></div>
+              <div class="tbtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 12a8.5 8.5 0 11-2.8-6.3"/><path d="M20.5 4v5h-5"/></svg></div>
+              <div class="tbtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 3.5a8.5 8.5 0 010 17z" fill="currentColor" stroke="none"/></svg></div>
+              <div class="vd"></div>
+              <div class="tbtn nav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4.5" width="17" height="15" rx="2.5"/><circle cx="9" cy="10" r="1.6"/><path d="M4 17.5l5-5 4 4 3-3 4 3.5"/></svg></div>
+              <div class="tbtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></div>
+              <div class="tbtn danger"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"><path d="M12 3v8"/><path d="M6.4 6.4a8 8 0 1011.2 0"/></svg></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button class="btn" data-replay>Replay</button>
+    </div>
+
+    <div class="vc">
+      <div class="meta"><div class="t">2 · Slide out</div><div class="d">Whole bar slides out from behind the bubble with a soft fade. Calmest option.</div></div>
+      <div class="stage mini">
+        <div class="ph">app</div>
+        <div class="dock right open" data-mini style="left:24px;top:57px">
+          <div class="bubble"><span class="wm">POZE</span></div>
+          <div class="tbar" data-anim="slide">
+            <div class="pillbg"></div>
+            <div class="tbrow">
+              <div class="tbtn active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10.5" width="14" height="9.5" rx="2"/><path d="M8.5 10.5V7.5a3.5 3.5 0 017 0v3"/></svg></div>
+              <div class="tbtn active"><span class="bdot"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3.5" width="17" height="17" rx="3"/><path d="M3.5 12h17M12 3.5v17"/></svg></div>
+              <div class="tbtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 12a8.5 8.5 0 11-2.8-6.3"/><path d="M20.5 4v5h-5"/></svg></div>
+              <div class="tbtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 3.5a8.5 8.5 0 010 17z" fill="currentColor" stroke="none"/></svg></div>
+              <div class="vd"></div>
+              <div class="tbtn nav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4.5" width="17" height="15" rx="2.5"/><circle cx="9" cy="10" r="1.6"/><path d="M4 17.5l5-5 4 4 3-3 4 3.5"/></svg></div>
+              <div class="tbtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></div>
+              <div class="tbtn danger"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"><path d="M12 3v8"/><path d="M6.4 6.4a8 8 0 1011.2 0"/></svg></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button class="btn" data-replay>Replay</button>
+    </div>
+
+    <div class="vc">
+      <div class="meta"><div class="t">3 · Unfold</div><div class="d">Bar wipes open from the bubble edge (clip), icons ripple in behind it.</div></div>
+      <div class="stage mini">
+        <div class="ph">app</div>
+        <div class="dock right open" data-mini style="left:24px;top:57px">
+          <div class="bubble"><span class="wm">POZE</span></div>
+          <div class="tbar" data-anim="unfold">
+            <div class="pillbg"></div>
+            <div class="tbrow">
+              <div class="tbtn active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10.5" width="14" height="9.5" rx="2"/><path d="M8.5 10.5V7.5a3.5 3.5 0 017 0v3"/></svg></div>
+              <div class="tbtn active"><span class="bdot"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3.5" width="17" height="17" rx="3"/><path d="M3.5 12h17M12 3.5v17"/></svg></div>
+              <div class="tbtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 12a8.5 8.5 0 11-2.8-6.3"/><path d="M20.5 4v5h-5"/></svg></div>
+              <div class="tbtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 3.5a8.5 8.5 0 010 17z" fill="currentColor" stroke="none"/></svg></div>
+              <div class="vd"></div>
+              <div class="tbtn nav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4.5" width="17" height="15" rx="2.5"/><circle cx="9" cy="10" r="1.6"/><path d="M4 17.5l5-5 4 4 3-3 4 3.5"/></svg></div>
+              <div class="tbtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></div>
+              <div class="tbtn danger"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"><path d="M12 3v8"/><path d="M6.4 6.4a8 8 0 1011.2 0"/></svg></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button class="btn" data-replay>Replay</button>
+    </div>
+
+  </div>
+
+  <div class="hint">
+    Gallery button opens <code>GalleryActivity</code> (reuses the existing <code>poze_slide_in</code> / <code>poze_zoom_out</code> transition).
+    On Android the bar animates with <code>PozeMotion</code>: pill scaleX 0.26→1 + per-icon <code>tbIn</code> stagger (~35ms each) over base duration 220ms.
+    Reply with the animation number (<b>1</b>, <b>2</b>, or <b>3</b>) and I’ll wire it into <code>overlay_menu.xml</code> + <code>OverlayService</code>.
+  </div>
+
+<script>
+  function stagger(root){
+    const items = root.querySelectorAll(".tbrow > *");
+    items.forEach((el,i)=> el.style.setProperty("--d", (i*35)+"ms"));
+  }
+  document.querySelectorAll(".tbar").forEach(stagger);
+
+  // replay for mini cards
+  document.querySelectorAll("[data-replay]").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      const dock = btn.closest(".vc").querySelector(".dock");
+      dock.classList.remove("open");
+      void dock.offsetWidth;
+      dock.classList.add("open");
+    });
+  });
+
+  // main interactive demo
+  const dock = document.getElementById("dock");
+  const bubble = document.getElementById("bubble");
+  const opBtn = document.getElementById("opBtn");
+  const tbar = document.getElementById("tbar");
+
+  bubble.addEventListener("click",()=>{
+    dock.classList.toggle("open");
+    bubble.classList.toggle("on", dock.classList.contains("open"));
+  });
+  opBtn.addEventListener("click",(e)=>{ e.stopPropagation(); tbar.classList.toggle("expand"); });
+
+  document.getElementById("replay").addEventListener("click",()=>{
+    dock.classList.remove("open"); void dock.offsetWidth; dock.classList.add("open");
+    bubble.classList.add("on");
+  });
+  document.getElementById("toggle").addEventListener("click",()=>bubble.click());
+</script>
+
+</body>
+</html>

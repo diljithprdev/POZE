@@ -1,0 +1,11 @@
+# Copy to local.properties and fill in your own values.
+# local.properties is git-ignored, so the keystore and its passwords stay on your
+# machine only. Every value can also be supplied as an environment variable
+# (POZE_STORE_FILE, POZE_STORE_PASSWORD, POZE_KEY_ALIAS, POZE_KEY_PASSWORD),
+# which is what CI should use.
+#
+# The keystore path is resolved relative to the app/ module directory.
+poze.storeFile=../your-release.keystore
+poze.storePassword=change-me
+poze.keyAlias=change-me
+poze.keyPassword=change-me

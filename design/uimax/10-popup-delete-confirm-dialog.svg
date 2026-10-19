@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="340" height="180" viewBox="0 0 340 180" font-family="Roboto, Arial, sans-serif">
+  <title>POZE — Delete confirmation dialog</title>
+  <desc>Shown from a tile minus badge in gallery delete mode.</desc>
+  <g id="popup-delete-confirm-dialog">
+    <rect id="dialog-surface" x="0" y="0" width="340" height="180" rx="20" fill="#16203A" stroke="#334155"/>
+
+    <g id="dialog-icon">
+      <circle cx="44" cy="44" r="18" fill="#2A1620"/>
+      <rect x="38" y="38" width="12" height="14" rx="2" fill="none" stroke="#DC2626" stroke-width="1.8"/>
+      <path d="M36 40 H52" stroke="#DC2626" stroke-width="1.8" stroke-linecap="round"/>
+      <path d="M41 36 H47" stroke="#DC2626" stroke-width="1.8" stroke-linecap="round"/>
+    </g>
+
+    <g id="dialog-text">
+      <text x="76" y="50" font-size="18" font-weight="500" fill="#E8EEF8">Delete image?</text>
+      <text x="24" y="88" font-size="14" fill="#C3CEDE">This removes the image from POZE.</text>
+      <text x="24" y="110" font-size="14" fill="#C3CEDE">This cannot be undone.</text>
+    </g>
+
+    <g id="dialog-actions">
+      <line x1="0" y1="136" x2="340" y2="136" stroke="#FFFFFF" stroke-opacity="0.08"/>
+      <text x="232" y="164" font-size="14" font-weight="500" text-anchor="middle" fill="#94A3B8">CANCEL</text>
+      <text x="312" y="164" font-size="14" font-weight="500" text-anchor="middle" fill="#3B82F6">DELETE</text>
+    </g>
+  </g>
+</svg>

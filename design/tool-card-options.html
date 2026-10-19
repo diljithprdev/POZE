@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>POZE — tool card redesign options</title>
+<style>
+  :root{
+    --home-base:#12161C; --menu-bg:#1B2129; --menu-bg-alt:#212831;
+    --menu-border:#33404B; --menu-border-soft:rgba(255,255,255,.165);
+    --divider:rgba(255,255,255,.12);
+    --accent:#4E9EA6; --accent-dark:#3E848B; --accent-soft:#77C0C6;
+    --on-accent:#0E131A; --on-surface:#ECE9E2; --on-surface-dim:#A6AFB7; --tertiary:#79828B;
+    --sand:#DCC9A8; --green:#7FB391; --red:#B85B4F; --red-pressed:#9E4A40;
+    --r-panel:22px; --r-dialog:24px; --r-row:16px; --r-control:12px; --r-tile:16px; --r-pill:26px;
+    --ease:cubic-bezier(.2,.7,.2,1);
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    --serif:Georgia,"Times New Roman",serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#0B0E12;color:var(--on-surface);font-family:var(--sans);padding:32px;display:flex;flex-direction:column;gap:28px;align-items:center}
+  h1{font-family:var(--serif);letter-spacing:.14em;color:var(--sand);font-size:24px;font-weight:700;text-align:center}
+  .cap{font-size:12px;letter-spacing:.12em;color:var(--tertiary);text-transform:uppercase;text-align:center}
+  .row{display:flex;gap:40px;flex-wrap:wrap;justify-content:center;align-items:flex-start}
+  .opt{display:flex;flex-direction:column;gap:12px;align-items:center;width:360px}
+  .opt .meta{text-align:center}
+  .opt .meta .t{font-size:15px;font-weight:700;color:var(--on-surface)}
+  .opt .meta .d{font-size:12px;color:var(--on-surface-dim);line-height:1.35;margin-top:4px}
+  .opt .meta .badge{display:inline-block;margin-top:8px;font-size:10px;letter-spacing:.1em;color:var(--accent-soft);border:1px solid var(--menu-border-soft);border-radius:20px;padding:3px 10px}
+
+  /* backdrop with bubble for context */
+  .stage{position:relative;width:360px;height:640px;border-radius:28px;background:var(--home-base);border:1px solid #232a33;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:18px}
+  .stage.tall{height:720px}
+  .bubble{position:absolute;right:16px;bottom:120px;width:52px;height:52px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;box-shadow:0 10px 24px rgba(0,0,0,.5)}
+
+  /* shared card chrome */
+  .card{width:322px;background:var(--menu-bg);border:1px solid var(--menu-border-soft);border-radius:var(--r-panel);padding:16px;box-shadow:0 20px 50px rgba(0,0,0,.5)}
+  .hd{display:flex;align-items:center;gap:10px}
+  .hd .dot{width:8px;height:8px;border-radius:50%;background:var(--green);flex:0 0 auto}
+  .hd .brand{flex:1;font-family:var(--serif);font-weight:700;font-size:18px;letter-spacing:.14em;color:var(--sand)}
+  .pill{background:rgba(127,179,145,.12);color:var(--green);font-size:10px;font-weight:600;padding:4px 9px;border-radius:20px;white-space:nowrap}
+  .hr{height:1px;background:var(--divider);margin:12px 0}
+  .label{font-size:10px;font-weight:600;letter-spacing:.12em;color:var(--on-surface-dim);margin:0 0 8px}
+
+  /* segmented control */
+  .seg{display:flex;height:38px;background:var(--menu-bg-alt);border:1px solid var(--menu-border-soft);border-radius:var(--r-control);padding:2px}
+  .seg span{flex:1;display:flex;align-items:center;justify-content:center;font-size:13px;border-radius:9px;color:var(--on-surface-dim);white-space:nowrap}
+  .seg span.on{background:var(--accent);color:var(--on-accent);font-weight:700}
+  .seg.sm{height:32px}
+  .seg.sm span{font-size:12px}
+
+  /* row: label left, control right */
+  .setrow{display:flex;align-items:center;gap:12px;padding:9px 0}
+  .setrow + .setrow{border-top:1px solid var(--divider)}
+  .setrow .k{flex:1;display:flex;align-items:center;gap:10px;font-size:14px;color:var(--on-surface)}
+  .setrow .v{font-size:12px;font-weight:600;color:var(--tertiary)}
+  .setrow .seg{width:132px;flex:0 0 auto}
+
+  /* boxed row (menu_card) */
+  .boxrow{display:flex;align-items:center;gap:12px;height:46px;padding:0 12px;background:var(--menu-bg-alt);border:1px solid var(--menu-border-soft);border-radius:var(--r-row)}
+  .boxrow + .boxrow{margin-top:8px}
+  .boxrow .k{flex:1;font-size:14px;color:var(--on-surface)}
+  .boxrow .v{font-size:12px;font-weight:600;color:var(--tertiary)}
+
+  /* slider */
+  .slider{margin-top:10px;height:22px;display:flex;align-items:center}
+  .track{width:100%;height:4px;border-radius:4px;background:#39424C;position:relative}
+  .track .fill{position:absolute;inset:0;background:var(--accent);border-radius:4px}
+  .track .thumb{position:absolute;right:-9px;top:50%;transform:translateY(-50%);width:16px;height:16px;border-radius:50%;background:#fff;border:3px solid var(--accent)}
+  .ophead{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--on-surface)}
+  .ophead .v{margin-left:auto;font-weight:600;color:var(--accent-soft)}
+
+  /* buttons */
+  .btn{height:46px;border-radius:var(--r-row);display:flex;align-items:center;justify-content:center;gap:8px;font-size:14px;font-weight:600}
+  .btn.ghost{border:1.5px solid var(--accent-soft);color:var(--on-surface-dim);background:transparent}
+  .btn.danger{background:var(--red);color:#fff}
+  .btn.danger:active{background:var(--red-pressed)}
+  .btn.acc{background:var(--accent);color:var(--on-accent)}
+  .btns2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+  .full{margin-top:10px}
+  .icon{width:20px;height:20px;display:block}
+  svg{display:block}
+
+  /* tile grid */
+  .tiles{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .tile{background:var(--menu-bg-alt);border:1px solid var(--menu-border-soft);border-radius:var(--r-tile);padding:12px;display:flex;flex-direction:column;gap:8px;align-items:flex-start}
+  .tile .ti{width:32px;height:32px;border-radius:10px;background:#26303B;display:flex;align-items:center;justify-content:center}
+  .tile .tl{font-size:13px;font-weight:600;color:var(--on-surface)}
+  .tile .ts{font-size:11px;color:var(--accent-soft)}
+  .tile.on{border-color:var(--accent)}
+  .tile.on .ti{background:var(--accent)}
+  .chips{display:flex;gap:8px}
+  .chip{flex:1;height:40px;border-radius:var(--r-row);background:var(--menu-bg-alt);border:1px solid var(--menu-border-soft);display:flex;align-items:center;justify-content:center;color:var(--on-surface-dim)}
+  .chip.on{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
+  .xbtn{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:transparent;border:1px solid var(--menu-border-soft)}
+</style>
+</head>
+<body>
+
+  <h1>Tool card · redesign options</h1>
+  <div class="cap">Same features in all four — pick a direction</div>
+
+  <div class="row">
+
+    <!-- ============ OPTION 1 — Compact rows ============ -->
+    <div class="opt">
+      <div class="meta">
+        <div class="t">1 · Compact rows</div>
+        <div class="d">One setting per row: label left, control right. Denser than today, same sections.</div>
+        <div class="badge">SAFEST CHANGE</div>
+      </div>
+      <div class="stage">
+        <div class="card">
+          <div class="hd"><span class="dot"></span><span class="brand">POZE</span><span class="pill">Overlay Active</span></div>
+          <div class="hr"></div>
+
+          <div class="setrow">
+            <span class="k">Lock mode</span>
+            <span class="seg sm"><span class="on">Locked</span><span>Free</span></span>
+          </div>
+          <div class="setrow">
+            <span class="k">Grid</span>
+            <span class="seg sm"><span>Off</span><span class="on">On</span></span>
+          </div>
+          <div class="setrow">
+            <span class="k"><span class="icon">↻</span>Rotate reference</span>
+            <span class="v">90° ›</span>
+          </div>
+          <div class="setrow" style="display:block">
+            <div class="ophead">Opacity <span class="v">100%</span></div>
+            <div class="slider"><div class="track"><div class="fill"></div><div class="thumb"></div></div></div>
+          </div>
+
+          <div class="hr"></div>
+          <div class="btns2">
+            <div class="btn ghost">Reset</div>
+            <div class="btn ghost">Close</div>
+          </div>
+          <div class="btn danger full">⏻ Stop Overlay</div>
+        </div>
+        <div class="bubble">✓</div>
+      </div>
+    </div>
+
+    <!-- ============ OPTION 2 — Tile grid ============ -->
+    <div class="opt">
+      <div class="meta">
+        <div class="t">2 · Action tiles</div>
+        <div class="d">Quick actions live in a 2×2 tile grid; opacity gets its own block. Bigger touch targets.</div>
+        <div class="badge">TOUCH-FIRST</div>
+      </div>
+      <div class="stage">
+        <div class="card">
+          <div class="hd">
+            <span class="dot"></span><span class="brand">POZE</span>
+            <span class="pill">Active</span>
+            <span class="xbtn">✕</span>
+          </div>
+          <div class="hr"></div>
+
+          <div class="tiles">
+            <div class="tile on"><div class="ti">🔒</div><div class="tl">Lock</div><div class="ts">Locked</div></div>
+            <div class="tile on"><div class="ti">▦</div><div class="tl">Grid</div><div class="ts">On</div></div>
+            <div class="tile"><div class="ti">↻</div><div class="tl">Rotate</div><div class="ts">90°</div></div>
+            <div class="tile"><div class="ti">⟲</div><div class="tl">Reset</div><div class="ts">Position</div></div>
+          </div>
+
+          <div class="hr"></div>
+          <div class="ophead">Opacity <span class="v">100%</span></div>
+          <div class="slider"><div class="track"><div class="fill"></div><div class="thumb"></div></div></div>
+
+          <div class="btn danger full">⏻ Stop Overlay</div>
+        </div>
+        <div class="bubble">✓</div>
+      </div>
+    </div>
+
+    <!-- ============ OPTION 3 — Hairline list ============ -->
+    <div class="opt">
+      <div class="meta">
+        <div class="t">3 · Hairline list</div>
+        <div class="d">No boxes — just hairline dividers. The calmest, lightest, most “relaxing” read.</div>
+        <div class="badge">MOST CALM</div>
+      </div>
+      <div class="stage tall">
+        <div class="card">
+          <div class="hd"><span class="dot"></span><span class="brand">POZE</span><span class="pill">Overlay Active</span></div>
+          <div class="hr"></div>
+
+          <div class="setrow">
+            <span class="k">Lock mode</span>
+            <span class="seg sm"><span class="on">Locked</span><span>Free</span></span>
+          </div>
+          <div class="setrow">
+            <span class="k">Grid</span>
+            <span class="seg sm"><span>Off</span><span class="on">On</span></span>
+          </div>
+          <div class="setrow"><span class="k">Rotate reference</span><span class="v">90° ›</span></div>
+          <div class="setrow" style="display:block">
+            <div class="ophead">Opacity <span class="v">100%</span></div>
+            <div class="slider"><div class="track"><div class="fill"></div><div class="thumb"></div></div></div>
+          </div>
+          <div class="setrow"><span class="k">Reset position</span><span class="v">›</span></div>
+
+          <div class="hr"></div>
+          <div class="btn ghost full">Close menu</div>
+          <div class="btn danger full">⏻ Stop Overlay</div>
+        </div>
+        <div class="bubble">✓</div>
+      </div>
+    </div>
+
+    <!-- ============ OPTION 4 — Bottom sheet ============ -->
+    <div class="opt">
+      <div class="meta">
+        <div class="t">4 · Bottom sheet</div>
+        <div class="d">Anchored sheet with drag handle and a 4-chip quick bar. Widest, thumb-friendly.</div>
+        <div class="badge">BIGGEST CHANGE</div>
+      </div>
+      <div class="stage tall" style="align-items:flex-end;padding:0">
+        <div style="width:100%;background:var(--menu-bg);border-top:1px solid var(--menu-border-soft);border-radius:24px 24px 0 0;padding:14px 16px 18px;box-shadow:0 -18px 40px rgba(0,0,0,.5)">
+          <div style="width:44px;height:4px;border-radius:4px;background:#3a4450;margin:2px auto 14px"></div>
+          <div class="hd"><span class="dot"></span><span class="brand">POZE</span><span class="pill">Overlay Active</span></div>
+
+          <div class="chips" style="margin-top:14px">
+            <div class="chip on">🔒 Locked</div>
+            <div class="chip on">▦ Grid</div>
+            <div class="chip">↻ 90°</div>
+            <div class="chip">⟲ Reset</div>
+          </div>
+
+          <div class="hr"></div>
+          <div class="ophead">Opacity <span class="v">100%</span></div>
+          <div class="slider"><div class="track"><div class="fill"></div><div class="thumb"></div></div></div>
+
+          <div class="hr"></div>
+          <div class="btns2">
+            <div class="btn ghost">Close</div>
+            <div class="btn danger">⏻ Stop</div>
+          </div>
+        </div>
+        <div class="bubble" style="bottom:230px">✓</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="cap" style="max-width:900px;line-height:1.6">
+    All options keep the same controls (lock mode · grid · rotate · opacity · reset · close · stop),
+    the Deep Calm tokens, and flat fills. Tell me the number and I’ll implement it.
+  </div>
+
+</body>
+</html>

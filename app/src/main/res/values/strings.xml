@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">POZE</string>
+    <string name="select_image">Select Image</string>
+    <string name="permission_required">Overlay permission is required</string>
+    <string name="grant_permission">Grant Permission</string>
+    <string name="overlay_active">Overlay Active</string>
+    <string name="stop_overlay">Stop Overlay</string>
+    <string name="choose_reference">Choose reference</string>
+    <string name="select_from_gallery">Select from gallery</string>
+    <string name="saved_in_app">Saved in app</string>
+    <string name="no_saved_images">No Saved Images</string>
+    <string name="empty_gallery_hint">Tap + to add a reference from your gallery.</string>
+    <string name="one_off_hint">Need a one-off? It stays in your gallery.</string>
+    <string name="overlay_permission_title">Overlay permission</string>
+    <string name="overlay_permission_subtitle">Needed to float over other apps</string>
+    <string name="grant">Grant</string>
+    <string name="locked">Locked</string>
+    <string name="free">Free</string>
+    <string name="grid_off">Grid off</string>
+    <string name="grid_on">Grid on</string>
+    <string name="rotate">Rotate</string>
+    <string name="reset">Reset</string>
+    <string name="close_menu">Close Menu</string>
+    <string name="delete_confirm_title">Delete image?</string>
+    <string name="delete_confirm_message">This removes the image from POZE. This cannot be undone.</string>
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
+    <string name="image_saved">Image saved</string>
+    <plurals name="images_saved">
+        <item quantity="one">%d image saved</item>
+        <item quantity="other">%d images saved</item>
+    </plurals>
+    <string name="image_deleted">Image deleted</string>
+    <string name="tap_minus_to_delete">Tap − to delete · tap trash again when done</string>
+
+    <string name="home_headline">Reference Image Overlay Tool</string>
+    <string name="home_sub">Float a reference over any app and align your shot.</string>
+    <string name="home_hint">Pick a reference, then drag the blue bubble over the camera app.</string>
+    <string name="brand_wordmark">POZE</string>
+
+    <string name="menu_title">POZE</string>
+    <string name="menu_section_overlay">OVERLAY</string>
+    <string name="menu_section_adjust">ADJUST</string>
+    <string name="menu_section_session">SESSION</string>
+    <string name="menu_opacity">Opacity</string>
+    <string name="opacity_value">100%</string>
+    <string name="opacity_percent">%1$d%%</string>
+    <string name="opacity_description">Overlay opacity, %1$d percent</string>
+    <string name="opacity_step_description">Opacity %1$d percent</string>
+
+    <string name="permission_dialog_title">Permission required</string>
+    <string name="permission_dialog_message">POZE needs permission to display over other apps. This is required for the reference overlay to work.</string>
+    <string name="save_failed">Save failed</string>
+    <string name="save_partial">Saved %1$d of %2$d images</string>
+    <string name="back">Back</string>
+
+    <string name="ic_lock_description">Lock reference</string>
+    <string name="ic_grid_description">Grid</string>
+    <string name="ic_gallery_description">Open gallery</string>
+    <string name="ic_rotate_description">Rotate reference</string>
+    <string name="ic_reset_description">Reset position and zoom</string>
+    <string name="ic_close_description">Close tool menu</string>
+    <string name="ic_stop_description">Stop overlay</string>
+    <string name="ic_opacity_description">Opacity</string>
+    <string name="bubble_description">POZE overlay control</string>
+    <string name="gallery_thumbnail_description">Saved reference %1$s</string>
+</resources>

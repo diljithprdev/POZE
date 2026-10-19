@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+        POZE "Deep Calm" palette.
+        Muted slate base + soft aqua accent + warm sand highlight.
+        Flat fills only: no gradients anywhere in the app.
+    -->
+
+    <!-- Base surfaces -->
+    <color name="poze_primary_dark">#0E131A</color>
+
+    <!-- Brand accent (soft aqua) -->
+    <color name="poze_accent">#4E9EA6</color>
+    <color name="poze_accent_dark">#3E848B</color>
+    <color name="poze_accent_soft">#77C0C6</color>
+
+    <!-- Text -->
+    <color name="poze_on_primary">#FFFFFF</color>
+    <color name="poze_on_accent">#0E131A</color>
+    <color name="poze_on_surface">#ECE9E2</color>
+    <color name="poze_on_surface_dim">#A6AFB7</color>
+    <color name="poze_text_tertiary">#79828B</color>
+
+    <!-- Overlay panel surfaces -->
+    <color name="poze_menu_bg">#1B2129</color>
+    <color name="poze_menu_bg_alt">#212831</color>
+    <color name="poze_menu_border">#33404B</color>
+    <color name="poze_menu_border_soft">#2AFFFFFF</color>
+    <color name="poze_divider">#1FFFFFFF</color>
+
+    <!-- Semantic states -->
+    <color name="poze_grid_color">#FFFFFF</color>
+    <color name="poze_toggle_on">#4E9EA6</color>
+    <color name="poze_toggle_off">#39424C</color>
+    <color name="poze_red_stop">#B85B4F</color>
+    <color name="poze_red_stop_pressed">#9E4A40</color>
+    <color name="poze_green_active">#7FB391</color>
+    <color name="poze_icon_bg">#141A22</color>
+
+    <!-- Home / onboarding surface -->
+    <color name="poze_home_base">#12161C</color>
+    <color name="poze_home_scrim">#8C12161C</color>
+    <color name="poze_home_end">#0F141A</color>
+    <color name="poze_home_text">#E9E6DF</color>
+    <color name="poze_home_sub">#A6AFB7</color>
+    <color name="poze_home_body">#C6C2B9</color>
+    <color name="poze_home_amber">#D9B36B</color>
+    <color name="poze_home_cta">#4E9EA6</color>
+    <color name="poze_home_cta_pressed">#3E848B</color>
+    <color name="poze_home_icon_mountain">#0E131A</color>
+
+    <!-- Dialog surface -->
+    <color name="poze_dialog_bg">#1B2129</color>
+    <color name="poze_dialog_text">#ECE9E2</color>
+
+    <!-- Deep Calm support tokens -->
+    <color name="poze_sand">#DCC9A8</color>
+    <color name="poze_scrim">#C20A0F14</color>
+    <color name="poze_tint_accent">#1F2E33</color>
+    <color name="poze_tint_danger">#2E2322</color>
+
+    <!-- Interaction -->
+    <color name="poze_ripple_light">#1FFFFFFF</color>
+    <color name="poze_ripple_on_accent">#26000000</color>
+</resources>

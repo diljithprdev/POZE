@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="411" height="300" viewBox="0 0 411 300" font-family="Roboto, Arial, sans-serif">
+  <title>POZE — Overlay composition</title>
+  <desc>Reference image at reduced opacity over another app, density-independent grid with centre crosshair, locked state and draggable bubble.</desc>
+  <defs>
+    <linearGradient id="sceneGrad" x1="0" y1="0" x2="0.6" y2="1">
+      <stop offset="0" stop-color="#2A3F6B"/>
+      <stop offset="0.55" stop-color="#16233F"/>
+      <stop offset="1" stop-color="#0A1222"/>
+    </linearGradient>
+    <linearGradient id="bubbleGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2563EB"/>
+      <stop offset="1" stop-color="#1D4ED8"/>
+    </linearGradient>
+    <clipPath id="frame"><rect x="0" y="0" width="411" height="300"/></clipPath>
+    <clipPath id="ref-clip"><rect x="96" y="44" width="220" height="212" rx="8"/></clipPath>
+  </defs>
+
+  <g id="overlay-reference-composition" clip-path="url(#frame)">
+    <rect x="0" y="0" width="411" height="300" fill="url(#sceneGrad)"/>
+
+    <g id="overlay-grid">
+      <line x1="0" y1="100" x2="411" y2="100" stroke="#FFFFFF" stroke-opacity="0.24" stroke-width="1"/>
+      <line x1="0" y1="200" x2="411" y2="200" stroke="#FFFFFF" stroke-opacity="0.24" stroke-width="1"/>
+      <line x1="137" y1="0" x2="137" y2="300" stroke="#FFFFFF" stroke-opacity="0.24" stroke-width="1"/>
+      <line x1="274" y1="0" x2="274" y2="300" stroke="#FFFFFF" stroke-opacity="0.24" stroke-width="1"/>
+      <g id="grid-center-crosshair" stroke="#FFFFFF" stroke-opacity="0.45" stroke-width="1.5">
+        <line x1="192" y1="150" x2="220" y2="150"/>
+        <line x1="206" y1="136" x2="206" y2="164"/>
+      </g>
+    </g>
+
+    <g id="overlay-reference-image" opacity="0.45">
+      <g clip-path="url(#ref-clip)">
+        <rect x="96" y="44" width="220" height="212" fill="#0F2A52"/>
+        <circle cx="270" cy="86" r="16" fill="#2C5DA8"/>
+        <path d="M96 256 L156 160 L200 210 L232 186 L316 256 Z" fill="#2B6BC4"/>
+        <path d="M180 256 L232 192 L280 236 L316 208 L316 256 Z" fill="#1C4A94"/>
+      </g>
+      <rect x="96" y="44" width="220" height="212" rx="8" fill="none" stroke="#FFFFFF" stroke-opacity="0.35"/>
+    </g>
+
+    <g id="state-locked-chip">
+      <rect x="12" y="12" width="76" height="24" rx="12" fill="#0B1220" fill-opacity="0.7" stroke="#4CAF50"/>
+      <circle cx="26" cy="24" r="3.5" fill="#4CAF50"/>
+      <text x="36" y="28" font-size="11" font-weight="500" fill="#FFFFFF">Locked</text>
+    </g>
+
+    <g id="overlay-bubble-on-scene">
+      <circle cx="366" cy="266" r="34" fill="#000000" opacity="0.35"/>
+      <circle cx="366" cy="264" r="28" fill="url(#bubbleGrad)"/>
+      <path d="M357 264 L363 270 L376 257" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </g>
+</svg>

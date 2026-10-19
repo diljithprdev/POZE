@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Spacing scale: 2 / 4 / 6 / 8 / 12 / 16 / 20 / 24 -->
+    <dimen name="space_xxs">2dp</dimen>
+    <dimen name="space_xs">4dp</dimen>
+    <dimen name="space_sm">8dp</dimen>
+    <dimen name="space_md">12dp</dimen>
+    <dimen name="space_lg">16dp</dimen>
+    <dimen name="space_xl">20dp</dimen>
+    <dimen name="space_xxl">24dp</dimen>
+
+    <!-- Screen gutters -->
+    <dimen name="gutter_home">20dp</dimen>
+    <dimen name="gutter_overlay">18dp</dimen>
+
+    <!-- Type scale -->
+    <dimen name="text_wordmark">46sp</dimen>
+    <dimen name="text_title">20sp</dimen>
+    <dimen name="text_headline">16sp</dimen>
+    <dimen name="text_body">15sp</dimen>
+    <dimen name="text_body_sm">14sp</dimen>
+    <dimen name="text_caption">12sp</dimen>
+    <dimen name="text_label">11sp</dimen>
+
+    <!-- Corners (softened for a calmer rhythm) -->
+    <dimen name="radius_panel">22dp</dimen>
+    <dimen name="radius_dialog">24dp</dimen>
+    <dimen name="radius_row">16dp</dimen>
+    <dimen name="radius_control">12dp</dimen>
+    <dimen name="radius_tile">16dp</dimen>
+    <dimen name="radius_pill">26dp</dimen>
+
+    <!-- Touch targets (minimum 48dp) -->
+    <dimen name="touch_min">48dp</dimen>
+    <dimen name="touch_row">50dp</dimen>
+    <dimen name="touch_row_plus">56dp</dimen>
+    <dimen name="touch_segment">44dp</dimen>
+    <dimen name="touch_circle">40dp</dimen>
+
+    <!-- Floating tool bar (vertical, lives in the bubble's column) -->
+    <dimen name="overlay_opacity_track">112dp</dimen>
+</resources>

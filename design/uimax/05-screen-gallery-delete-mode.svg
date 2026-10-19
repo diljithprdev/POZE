@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="411" height="891" viewBox="0 0 411 891" font-family="Roboto, Arial, sans-serif">
+  <title>POZE — Gallery delete mode</title>
+  <desc>Delete mode active: header button turns danger red, every tile shows a minus badge, tapping a tile is disabled.</desc>
+  <defs>
+    <linearGradient id="homeGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#08152D"/>
+      <stop offset="0.5" stop-color="#090D1B"/>
+      <stop offset="1" stop-color="#050711"/>
+    </linearGradient>
+    <radialGradient id="glowBlue">
+      <stop offset="0" stop-color="#2563EB" stop-opacity="0.5"/>
+      <stop offset="1" stop-color="#2563EB" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="photoGrad" x1="0" y1="0" x2="0.4" y2="1">
+      <stop offset="0" stop-color="#1B2C52"/>
+      <stop offset="1" stop-color="#0D1730"/>
+    </linearGradient>
+    <clipPath id="frame"><rect x="0" y="0" width="411" height="891"/></clipPath>
+    <clipPath id="tile-a"><rect x="28" y="68" width="173" height="150" rx="14"/></clipPath>
+    <clipPath id="tile-b"><rect x="210" y="68" width="173" height="150" rx="14"/></clipPath>
+    <clipPath id="tile-c"><rect x="28" y="264" width="173" height="150" rx="14"/></clipPath>
+    <clipPath id="tile-d"><rect x="210" y="264" width="173" height="150" rx="14"/></clipPath>
+  </defs>
+
+  <g id="screen-gallery-delete-mode" clip-path="url(#frame)">
+    <rect x="0" y="0" width="411" height="891" fill="url(#homeGrad)"/>
+    <circle id="gallery-glow" cx="60" cy="100" r="160" fill="url(#glowBlue)"/>
+
+    <g id="gallery-header">
+      <g id="component-icon-button-back">
+        <circle cx="36" cy="32" r="22" fill="#0FFFFFFF" opacity="0.35"/>
+        <path d="M41 25 L33 32 L41 39" fill="none" stroke="#E2E8F0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </g>
+      <text id="gallery-title" x="68" y="39" font-size="20" font-weight="500" fill="#E2E8F0">Choose reference</text>
+      <g id="component-icon-button-danger">
+        <circle cx="315" cy="32" r="20" fill="#DC2626"/>
+        <rect x="312" y="26" width="6" height="2" rx="1" fill="#FFFFFF"/>
+        <rect x="309" y="29" width="12" height="2" rx="1" fill="#FFFFFF"/>
+        <path d="M310.5 32.5 L311.3 41 L318.7 41 L319.5 32.5" fill="none" stroke="#FFFFFF" stroke-width="1.4" stroke-linejoin="round"/>
+      </g>
+      <g id="component-icon-button-accent">
+        <circle cx="367" cy="32" r="20" fill="#2563EB"/>
+        <path d="M360 32 L374 32 M367 25 L367 39" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/>
+      </g>
+    </g>
+
+    <g id="gallery-grid">
+      <g id="gallery-item-a">
+        <g clip-path="url(#tile-a)">
+          <rect x="28" y="68" width="173" height="150" fill="url(#photoGrad)"/>
+          <circle cx="158" cy="100" r="12" fill="#24406F"/>
+          <path d="M28 218 L70 154 L100 188 L124 172 L158 218 Z" fill="#1E3A6B"/>
+          <path d="M98 218 L140 168 L178 208 L201 186 L201 218 Z" fill="#16294C"/>
+        </g>
+        <rect x="28" y="68" width="173" height="150" rx="14" fill="none" stroke="#334155"/>
+        <g id="state-thumbnail-delete-badge-a">
+          <circle cx="182" cy="87" r="15" fill="#0B1220" opacity="0.55"/>
+          <circle cx="182" cy="87" r="13" fill="#DC2626" stroke="#0B1220" stroke-width="2"/>
+          <path d="M176 87 L188 87" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round"/>
+        </g>
+        <text x="28" y="238" font-size="12" font-weight="500" fill="#E2E8F0">IMG_1734</text>
+        <text x="28" y="254" font-size="11" fill="#7A879B">12 Mar</text>
+      </g>
+      <g id="gallery-item-b">
+        <g clip-path="url(#tile-b)">
+          <rect x="210" y="68" width="173" height="150" fill="url(#photoGrad)"/>
+          <circle cx="340" cy="100" r="12" fill="#24406F"/>
+          <path d="M210 218 L252 154 L282 188 L306 172 L340 218 Z" fill="#1E3A6B"/>
+          <path d="M280 218 L322 168 L360 208 L383 186 L383 218 Z" fill="#16294C"/>
+        </g>
+        <rect x="210" y="68" width="173" height="150" rx="14" fill="none" stroke="#334155"/>
+        <g id="state-thumbnail-delete-badge-b">
+          <circle cx="364" cy="87" r="15" fill="#0B1220" opacity="0.55"/>
+          <circle cx="364" cy="87" r="13" fill="#DC2626" stroke="#0B1220" stroke-width="2"/>
+          <path d="M358 87 L370 87" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round"/>
+        </g>
+        <text x="210" y="238" font-size="12" font-weight="500" fill="#E2E8F0">IMG_1651</text>
+        <text x="210" y="254" font-size="11" fill="#7A879B">12 Mar</text>
+      </g>
+      <g id="gallery-item-c">
+        <g clip-path="url(#tile-c)">
+          <rect x="28" y="264" width="173" height="150" fill="url(#photoGrad)"/>
+          <circle cx="158" cy="296" r="12" fill="#24406F"/>
+          <path d="M28 414 L70 350 L100 384 L124 368 L158 414 Z" fill="#1E3A6B"/>
+          <path d="M98 414 L140 364 L178 404 L201 382 L201 414 Z" fill="#16294C"/>
+        </g>
+        <rect x="28" y="264" width="173" height="150" rx="14" fill="none" stroke="#334155"/>
+        <g id="state-thumbnail-delete-badge-c">
+          <circle cx="182" cy="283" r="15" fill="#0B1220" opacity="0.55"/>
+          <circle cx="182" cy="283" r="13" fill="#DC2626" stroke="#0B1220" stroke-width="2"/>
+          <path d="M176 283 L188 283" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round"/>
+        </g>
+        <text x="28" y="434" font-size="12" font-weight="500" fill="#E2E8F0">IMG_1540</text>
+        <text x="28" y="450" font-size="11" fill="#7A879B">9 Mar</text>
+      </g>
+      <g id="gallery-item-d">
+        <g clip-path="url(#tile-d)">
+          <rect x="210" y="264" width="173" height="150" fill="url(#photoGrad)"/>
+          <circle cx="340" cy="296" r="12" fill="#24406F"/>
+          <path d="M210 414 L252 350 L282 384 L306 368 L340 414 Z" fill="#1E3A6B"/>
+          <path d="M280 414 L322 364 L360 404 L383 382 L383 414 Z" fill="#16294C"/>
+        </g>
+        <rect x="210" y="264" width="173" height="150" rx="14" fill="none" stroke="#334155"/>
+        <g id="state-thumbnail-delete-badge-d">
+          <circle cx="364" cy="283" r="15" fill="#0B1220" opacity="0.55"/>
+          <circle cx="364" cy="283" r="13" fill="#DC2626" stroke="#0B1220" stroke-width="2"/>
+          <path d="M358 283 L370 283" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round"/>
+        </g>
+        <text x="210" y="434" font-size="12" font-weight="500" fill="#E2E8F0">IMG_1402</text>
+        <text x="210" y="450" font-size="11" fill="#7A879B">9 Mar</text>
+      </g>
+    </g>
+
+    <text id="gallery-hint" x="205.5" y="809" font-size="11" text-anchor="middle" fill="#7A879B">Need a one-off? It stays in your gallery.</text>
+
+    <g id="component-button-ghost">
+      <rect x="24" y="825" width="363" height="50" rx="14" fill="#0FFFFFFF" stroke="#3B82F6" stroke-width="1.5"/>
+      <text x="205.5" y="855" font-size="15" font-weight="500" text-anchor="middle" fill="#3B82F6">Select from gallery</text>
+    </g>
+  </g>
+</svg>

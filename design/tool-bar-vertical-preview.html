@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>POZE — tool bar grows downward from under the bubble</title>
+<style>
+  :root{
+    --home-base:#12161C; --menu-bg:#1B2129; --menu-bg-alt:#212831;
+    --menu-border-soft:rgba(255,255,255,.165); --divider:rgba(255,255,255,.12);
+    --accent:#4E9EA6; --accent-soft:#77C0C6; --on-accent:#0E131A;
+    --on-surface:#ECE9E2; --on-surface-dim:#A6AFB7; --tertiary:#79828B;
+    --sand:#DCC9A8; --red:#B85B4F; --red-soft:#E7B3AB; --icon-bg:#141A22;
+    --toggle-off:#39424C;
+    --ease:cubic-bezier(.2,.7,.2,1);
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    --serif:Georgia,"Times New Roman",serif;
+    --grow:340ms; --fade:200ms; --exit:150ms; --stagger:35ms;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#0B0E12;color:var(--on-surface);font-family:var(--sans);padding:30px;display:flex;flex-direction:column;gap:26px;align-items:center}
+  h1{font-family:var(--serif);letter-spacing:.14em;color:var(--sand);font-size:23px;font-weight:700;text-align:center}
+  h2{font-family:var(--serif);letter-spacing:.1em;color:var(--sand);font-size:16px;font-weight:700;text-align:center}
+  .cap{font-size:12px;letter-spacing:.12em;color:var(--tertiary);text-transform:uppercase;text-align:center}
+  .hint{font-size:12px;color:var(--on-surface-dim);text-align:center;max-width:880px;line-height:1.65}
+  .row{display:flex;gap:24px;flex-wrap:wrap;justify-content:center;align-items:flex-start}
+  code{background:#1B2129;border:1px solid var(--menu-border-soft);border-radius:6px;padding:1px 6px;font-size:11px}
+  b.sand{color:var(--sand)}
+
+  /* ---------- stage ---------- */
+  .stage{position:relative;border-radius:26px;background:var(--home-base);border:1px solid #232a33;overflow:hidden}
+  .stage .ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#333c48;font-size:12px;letter-spacing:.2em;text-transform:uppercase}
+  .stage.big{width:372px;height:720px}
+  .stage.mini{width:330px;height:380px}
+
+  .ref{position:absolute;right:22px;top:120px;width:168px;height:126px;border-radius:14px;border:1px solid var(--sand);background:rgba(220,201,168,.10);display:flex;align-items:center;justify-content:center;color:var(--sand);font-size:10px;letter-spacing:.18em}
+
+  /* ---------- dock: bubble on top, bar grows downward from under it ---------- */
+  .dock{position:absolute;width:56px;height:56px}
+  .bubble{width:56px;height:56px;border-radius:50%;background:var(--icon-bg);display:flex;align-items:center;justify-content:center;box-shadow:0 10px 26px rgba(0,0,0,.55);cursor:pointer;transition:transform .14s var(--ease),box-shadow .2s var(--ease);z-index:3;position:relative}
+  .bubble:active{transform:scale(.94)}
+  .bubble.on{box-shadow:0 0 0 3px rgba(78,158,166,.35),0 10px 26px rgba(0,0,0,.55)}
+  .bubble .wm{font-family:var(--serif);font-weight:700;color:var(--sand);font-size:15px;letter-spacing:.06em}
+  .dock.pulse .bubble{transform:scale(1.08)}
+
+  /* the bar lives directly under the bubble, same column */
+  .tbar{
+    position:absolute;left:50%;top:calc(100% + 12px);transform:translateX(-50%);
+    display:inline-flex;flex-direction:column;z-index:2;
+  }
+  .pillbg{position:absolute;inset:0;border-radius:999px;background:var(--menu-bg);border:1px solid var(--menu-border-soft);box-shadow:0 18px 44px rgba(0,0,0,.55)}
+  .tbcol{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:4px;width:56px;padding:8px 0}
+  .tbcol>*{opacity:0}
+
+  /* ====== A · GROW DOWN FROM UNDER THE BUBBLE (chosen) ====== */
+  .tbar[data-anim="grow"] .pillbg{
+    transform-origin:center top;transform:scaleY(.16) scaleX(.58);opacity:0;
+    transition:transform var(--grow) var(--ease),opacity var(--fade) var(--ease);
+  }
+  .dock.open .tbar[data-anim="grow"] .pillbg{transform:none;opacity:1}
+
+  /* ====== B · UNFOLD (wipe down from the bubble) ====== */
+  .tbar[data-anim="unfold"] .pillbg{
+    clip-path:inset(0 0 88% 0 round 999px);
+    transition:clip-path var(--grow) var(--ease);
+  }
+  .dock.open .tbar[data-anim="unfold"] .pillbg{clip-path:inset(0 0 0 0 round 999px)}
+
+  /* ====== C · SLIDE DOWN FROM BEHIND THE BUBBLE ====== */
+  .tbar[data-anim="slide"] .pillbg,
+  .tbar[data-anim="slide"] .tbcol{
+    transform:translateY(-20px);opacity:0;
+    transition:transform 320ms var(--ease),opacity 240ms var(--ease);
+  }
+  .dock.open .tbar[data-anim="slide"] .pillbg,
+  .dock.open .tbar[data-anim="slide"] .tbcol{transform:none;opacity:1}
+
+  /* ====== D · CASCADE ====== */
+  .tbar[data-anim="cascade"] .pillbg{
+    transform-origin:center top;transform:scaleY(.05);opacity:0;
+    transition:transform var(--grow) var(--ease),opacity var(--fade) var(--ease);
+  }
+  .dock.open .tbar[data-anim="cascade"] .pillbg{transform:none;opacity:1}
+
+  /* icons drop out of the bubble, top to bottom */
+  @keyframes tbIn{from{opacity:0;transform:translateY(-10px) scale(.84)}to{opacity:1;transform:none}}
+  @keyframes tbPop{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:none}}
+  .dock.open .tbar[data-anim="grow"] .tbcol>*,
+  .dock.open .tbar[data-anim="unfold"] .tbcol>*,
+  .dock.open .tbar[data-anim="slide"] .tbcol>*{animation:tbIn 240ms var(--ease) backwards;animation-delay:var(--d,0ms)}
+  .dock.open .tbar[data-anim="cascade"] .tbcol>*{animation:tbPop 220ms var(--ease) backwards;animation-delay:var(--d,0ms)}
+
+  /* ---------- buttons ---------- */
+  .tbtn{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--on-surface-dim);position:relative;cursor:pointer;transition:transform .12s var(--ease),background .16s var(--ease),color .16s var(--ease)}
+  .tbtn:hover{background:var(--menu-bg-alt)}
+  .tbtn:active{transform:scale(.9)}
+  .tbtn.active{background:var(--accent);color:var(--on-accent)}
+  .tbtn.nav{color:var(--accent-soft)}
+  .tbtn.danger{color:var(--red-soft)}
+  .tbtn.danger:hover{background:#2E2322}
+  .tbtn svg{width:22px;height:22px}
+  .bdot{position:absolute;top:9px;right:9px;width:7px;height:7px;border-radius:50%;background:var(--accent-soft)}
+  .hd{width:26px;height:1px;background:var(--divider);margin:6px 0;flex:0 0 auto}
+
+  /* ---------- O2 · inline vertical slider (chosen) ---------- */
+  .opinline{width:44px;height:0;overflow:hidden;opacity:0;
+    transition:height 260ms var(--ease),opacity 200ms var(--ease)}
+  .tbar.expand .opinline{height:158px;opacity:1;margin:4px 0}
+  .vtrack{width:8px;height:112px;border-radius:4px;background:var(--toggle-off);position:relative;margin:0 auto;cursor:pointer;touch-action:none}
+  .vtrack .vfill{position:absolute;left:0;right:0;bottom:0;height:80%;background:var(--accent);border-radius:4px}
+  .vtrack .vthumb{position:absolute;left:50%;bottom:80%;transform:translate(-50%,50%);width:22px;height:16px;border-radius:5px;background:var(--accent-soft);border:2px solid #fff;transition:transform .12s var(--ease)}
+  .vtrack.drag .vthumb{transform:translate(-50%,50%) scale(1.2)}
+  .vpc{font-size:11px;color:var(--on-surface-dim);text-align:center;margin-top:6px;font-variant-numeric:tabular-nums}
+
+  /* ---------- O1 · side panel ---------- */
+  .opwrap{position:absolute;left:calc(100% + 10px);top:50%;display:flex;align-items:center;gap:12px;
+    background:var(--menu-bg);border:1px solid var(--menu-border-soft);border-radius:18px;padding:12px 14px;
+    transform:translateY(-50%) translateX(-14px);opacity:0;pointer-events:none;
+    transition:transform 220ms var(--ease),opacity 180ms var(--ease)}
+  .tbar.expand .opwrap{transform:translateY(-50%);opacity:1;pointer-events:auto}
+  .track{width:132px;height:8px;border-radius:4px;background:var(--toggle-off);position:relative;cursor:pointer;touch-action:none}
+  .track .fill{position:absolute;left:0;top:0;bottom:0;width:80%;background:var(--accent);border-radius:4px}
+  .track .thumb{position:absolute;top:50%;left:80%;transform:translate(-50%,-50%);width:22px;height:16px;border-radius:5px;background:var(--accent-soft);border:2px solid #fff}
+  .pv{font-size:12px;color:var(--on-surface-dim);width:36px;text-align:right;font-variant-numeric:tabular-nums}
+  .dock.left .opwrap{left:auto;right:calc(100% + 10px)}
+
+  /* ---------- O3 · widen panel ---------- */
+  .tbar[data-op="widen"] .tbcol{transition:width 220ms var(--ease)}
+  .tbar[data-op="widen"].expand .tbcol{width:200px}
+  .hpanel{position:absolute;left:56px;top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:12px;opacity:0;pointer-events:none;transition:opacity 160ms var(--ease)}
+  .tbar[data-op="widen"].expand .hpanel{opacity:1;pointer-events:auto}
+
+  /* ---------- controls ---------- */
+  .btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+  .btn{background:var(--menu-bg);border:1px solid var(--menu-border-soft);color:var(--on-surface);border-radius:12px;padding:9px 16px;font-size:13px;cursor:pointer;font-family:var(--sans)}
+  .btn:hover{background:var(--menu-bg-alt)}
+  .btn.primary{border-color:rgba(78,158,166,.5);color:var(--accent-soft)}
+
+  .vc{display:flex;flex-direction:column;gap:12px;align-items:center}
+  .vc .meta{text-align:center;max-width:310px}
+  .vc .meta .t{font-size:14px;font-weight:700}
+  .vc .meta .d{font-size:12px;color:var(--on-surface-dim);margin-top:5px;line-height:1.5}
+  .tag{font-size:10px;letter-spacing:.1em;color:var(--accent-soft);border:1px solid var(--menu-border-soft);border-radius:20px;padding:3px 10px;display:inline-block;margin-top:8px}
+  .tag.pick{color:var(--on-accent);background:var(--accent);border-color:transparent}
+  .mini .dock{transform:scale(.52);transform-origin:left top}
+  .mini .ref{display:none}
+  .noanim *{transition:none !important;animation:none !important}
+  .specline{margin-top:6px;font-size:11px;color:var(--tertiary);line-height:1.75;text-align:left;max-width:820px}
+</style>
+</head>
+<body>
+
+  <h1>Vertical tool bar</h1>
+  <div class="cap">Bubble on top · bar slides DOWN out from under it · folds back up into it · slider = inline vertical</div>
+
+  <!-- ================= INTERACTIVE ================= -->
+  <div class="stage big" id="stage">
+    <div class="ph">camera app behind the overlay</div>
+    <div class="ref" id="ref">reference image</div>
+    <div class="dock" id="dock" data-anim="slide" data-op="inline" style="left:24px;top:48px"></div>
+  </div>
+
+  <div class="btns">
+    <button class="btn primary" id="replayOpen">Replay open (out of the bubble)</button>
+    <button class="btn" id="replayClose">Replay close (back into the bubble)</button>
+    <button class="btn" id="toggle">Toggle</button>
+  </div>
+
+  <div class="hint">
+    The bubble stays exactly where it is; the bar hangs in the <b>same column directly under it</b> and grows downward out of
+    the bubble's bottom edge, then folds back up into it. Tap <b>Opacity</b> to grow the inline vertical slider — the bar gets
+    taller downward and never covers the bubble or anything else.
+  </div>
+
+  <!-- ================= ANIMATION OPTIONS ================= -->
+  <h2>Open / close animation</h2>
+  <div class="row">
+
+    <div class="vc">
+      <div class="meta"><div class="t">A · Grow down out of the bubble</div><div class="d">Pill scales out of the bubble's bottom edge, icons drop in one-by-one behind it. Closing folds it back up.</div></div>
+      <div class="stage mini"><div class="ph">app</div>
+        <div class="dock" data-anim="grow" data-op="inline" data-mini style="left:137px;top:44px"></div>
+      </div>
+      <button class="btn" data-replay>Replay open → close</button>
+    </div>
+
+    <div class="vc">
+      <div class="meta"><div class="t">B · Unfold down from the bubble</div><div class="d">Pill wipes down from the bubble edge (clip), icons ripple in behind it. Closing wipes back up.</div></div>
+      <div class="stage mini"><div class="ph">app</div>
+        <div class="dock" data-anim="unfold" data-op="inline" data-mini style="left:137px;top:44px"></div>
+      </div>
+      <button class="btn" data-replay>Replay open → close</button>
+    </div>
+
+    <div class="vc">
+      <div class="meta"><div class="t">C · Slide down from behind the bubble</div><div class="d">Bar slides down from under the bubble with a soft fade, and slides back up on close. Calmest option.</div><div class="tag pick">CHOSEN</div></div>
+      <div class="stage mini"><div class="ph">app</div>
+        <div class="dock" data-anim="slide" data-op="inline" data-mini style="left:137px;top:44px"></div>
+      </div>
+      <button class="btn" data-replay>Replay open → close</button>
+    </div>
+
+    <div class="vc">
+      <div class="meta"><div class="t">D · Cascade down out of the bubble</div><div class="d">A thin thread grows from the bubble and the icons pop out one at a time. Most characterful.</div></div>
+      <div class="stage mini"><div class="ph">app</div>
+        <div class="dock" data-anim="cascade" data-op="inline" data-mini style="left:137px;top:44px"></div>
+      </div>
+      <button class="btn" data-replay>Replay open → close</button>
+    </div>
+
+  </div>
+
+  <!-- ================= SLIDER OPTIONS ================= -->
+  <h2>Opacity slider — placement</h2>
+  <div class="row">
+
+    <div class="vc">
+      <div class="meta"><div class="t">O1 · Side panel</div><div class="d">Slider pops out beside the bar, level with the Opacity button. Horizontal, bar stays short.</div></div>
+      <div class="stage mini"><div class="ph">app</div>
+        <div class="dock" data-anim="grow" data-op="side" data-mini style="left:106px;top:44px"></div>
+      </div>
+    </div>
+
+    <div class="vc">
+      <div class="meta"><div class="t">O2 · Inline vertical</div><div class="d">Bar grows taller and shows a vertical track under the Opacity button, with a % readout. No extra panel.</div><div class="tag pick">CHOSEN</div></div>
+      <div class="stage mini"><div class="ph">app</div>
+        <div class="dock" data-anim="grow" data-op="inline" data-mini style="left:137px;top:30px"></div>
+      </div>
+    </div>
+
+    <div class="vc">
+      <div class="meta"><div class="t">O3 · Widen panel</div><div class="d">Tapping Opacity widens the bar itself and the slider sits beside the icons. Bar shifts wider, not taller.</div></div>
+      <div class="stage mini"><div class="ph">app</div>
+        <div class="dock" data-anim="grow" data-op="widen" data-mini style="left:106px;top:44px"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="specline">
+    <b class="sand">Spec locked in</b> — the bubble is the floating button; the tool bar sits in the same column directly <b>under</b> it and grows down out of the bubble's bottom edge, folding back up into it on close; opacity = inline vertical slider.<br>
+    Bar: 56dp wide (same as the bubble), 44dp icon targets, 4dp gaps, 26dp hairline group divider, full radius. Order: Lock · Grid · Rotate · Opacity (+ inline vertical slider) ─ Gallery · Reset · Close · Stop.
+    Gallery tint = accent-soft, Stop tint = red.<br>
+    Open: pill and column <code>translateY(-18dp) → 0</code> with opacity <code>0 → 1</code>, 320ms decelerate — read as sliding down out from behind the bubble; icons <code>translateY(-10dp) scale(.9) → 1</code>, 240ms, 35ms stagger. If the bar ever has to flip above the bubble, both directions invert.
+    Close: exact reverse, 150ms, no stagger.
+    Slider: track 8dp × 112dp, fill from the bottom in accent, thumb 22×16dp radius 5dp (accent-soft + 2dp white), % readout 11sp dim; the bar only ever grows <b>downward</b>, so the bubble stays put and nothing is overlapped.
+  </div>
+
+<script>
+  const SVG = {
+    lock:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10.5" width="14" height="9.5" rx="2"/><path d="M8.5 10.5V7.5a3.5 3.5 0 017 0v3"/></svg>',
+    grid:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3.5" width="17" height="17" rx="3"/><path d="M3.5 12h17M12 3.5v17"/></svg>',
+    rotate:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 12a8.5 8.5 0 11-2.8-6.3"/><path d="M20.5 4v5h-5"/></svg>',
+    opacity:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8.5"/><path d="M12 3.5a8.5 8.5 0 010 17z" fill="currentColor" stroke="none"/></svg>',
+    gallery:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4.5" width="17" height="15" rx="2.5"/><circle cx="9" cy="10" r="1.6"/><path d="M4 17.5l5-5 4 4 3-3 4 3.5"/></svg>',
+    reset:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 12a8.5 8.5 0 1010-8.3"/><path d="M3.5 4.5v5h5"/></svg>',
+    close:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>',
+    stop:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"><path d="M12 3v8"/><path d="M6.4 6.4a8 8 0 1011.2 0"/></svg>'
+  };
+  const ORDER = ['lock','grid','rotate','opacity','|','gallery','reset','close','stop'];
+
+  function buildDock(dock){
+    const anim = dock.dataset.anim || 'grow';
+    const op   = dock.dataset.op   || 'inline';
+    let col = '';
+    ORDER.forEach(t=>{
+      if(t === '|'){ col += '<div class="hd"></div>'; return; }
+      const active = (t === 'lock' || t === 'grid') ? ' active' : '';
+      const extra  = (t === 'gallery' ? ' nav' : '') + (t === 'stop' ? ' danger' : '');
+      const dot    = (t === 'grid') ? '<span class="bdot"></span>' : '';
+      col += '<div class="tbtn' + active + extra + '" data-tool="' + t + '" title="' + t + '">' + dot + SVG[t] + '</div>';
+      if(t === 'opacity' && op === 'inline'){
+        col += '<div class="opinline"><div class="vtrack"><div class="vfill"></div><div class="vthumb"></div></div><div class="vpc">80%</div></div>';
+      }
+    });
+
+    let bar = '<div class="tbar" data-anim="' + anim + '" data-op="' + op + '">' +
+                '<div class="pillbg"></div>' +
+                '<div class="tbcol">' + col + '</div>';
+
+    if(op === 'side'){
+      bar += '<div class="opwrap"><div class="track"><div class="fill" style="width:80%"></div>' +
+             '<div class="thumb" style="left:80%"></div></div><span class="pv">80%</span></div>';
+    }
+    if(op === 'widen'){
+      bar += '<div class="hpanel"><div class="track"><div class="fill" style="width:80%"></div>' +
+             '<div class="thumb" style="left:80%"></div></div><span class="pv">80%</span></div>';
+    }
+    bar += '</div>';
+
+    dock.innerHTML = '<div class="bubble"><span class="wm">POZE</span></div>' + bar;
+
+    const colEl = dock.querySelector('.tbcol');
+    [...colEl.children].forEach((el, i) => el.style.setProperty('--d', (i * 35) + 'ms'));
+
+    const opBtn = dock.querySelector('[data-tool="opacity"]');
+    const tbar  = dock.querySelector('.tbar');
+    opBtn.addEventListener('click', e => { e.stopPropagation(); tbar.classList.toggle('expand'); });
+
+    const vtrack = dock.querySelector('.vtrack');
+    if(vtrack) wireVertical(vtrack, dock.querySelector('.vfill'), dock.querySelector('.vthumb'), dock.querySelector('.vpc'), dock);
+    const htrack = dock.querySelector('.track');
+    if(htrack) wireHorizontal(htrack, dock.querySelector('.fill'), dock.querySelector('.thumb'), dock.querySelector('.pv'), dock);
+
+    dock.querySelector('.bubble').addEventListener('click', () => toggle(dock, !dock.classList.contains('open')));
+  }
+
+  function wireVertical(track, fill, thumb, label, dock){
+    const set = f => {
+      f = Math.max(0, Math.min(1, f));
+      const pct = Math.round(f * 100);
+      fill.style.height = pct + '%';
+      thumb.style.bottom = pct + '%';
+      label.textContent = pct + '%';
+      const ref = dock.closest('.stage').querySelector('.ref');
+      if(ref) ref.style.opacity = 0.25 + f * 0.75;
+    };
+    const from = e => {
+      const r = track.getBoundingClientRect();
+      set(1 - ((e.clientY - r.top) / r.height));
+    };
+    track.addEventListener('pointerdown', e => { track.classList.add('drag'); track.setPointerCapture(e.pointerId); from(e); e.stopPropagation(); });
+    track.addEventListener('pointermove', e => { if(track.classList.contains('drag')){ from(e); e.stopPropagation(); } });
+    track.addEventListener('pointerup', () => track.classList.remove('drag'));
+    track.addEventListener('pointercancel', () => track.classList.remove('drag'));
+  }
+
+  function wireHorizontal(track, fill, thumb, label, dock){
+    const set = f => {
+      f = Math.max(0, Math.min(1, f));
+      const pct = Math.round(f * 100);
+      fill.style.width = pct + '%';
+      thumb.style.left = pct + '%';
+      label.textContent = pct + '%';
+      const ref = dock.closest('.stage').querySelector('.ref');
+      if(ref) ref.style.opacity = 0.25 + f * 0.75;
+    };
+    const from = e => {
+      const r = track.getBoundingClientRect();
+      set((e.clientX - r.left) / r.width);
+    };
+    track.addEventListener('pointerdown', e => { track.setPointerCapture(e.pointerId); from(e); e.stopPropagation(); });
+    track.addEventListener('pointermove', e => { if(e.buttons){ from(e); e.stopPropagation(); } });
+  }
+
+  function toggle(dock, open){
+    const tbar = dock.querySelector('.tbar');
+    const bubble = dock.querySelector('.bubble');
+    if(open){
+      dock.classList.remove('noanim');
+      dock.classList.add('open', 'pulse');
+      bubble.classList.add('on');
+      setTimeout(() => dock.classList.remove('pulse'), 260);
+    }else{
+      dock.classList.remove('open', 'pulse');
+      bubble.classList.remove('on');
+      tbar.classList.remove('expand');
+    }
+  }
+  function openInstant(dock){
+    dock.classList.add('noanim');
+    dock.classList.remove('open', 'pulse');
+    dock.querySelector('.bubble').classList.remove('on');
+    dock.querySelector('.tbar').classList.remove('expand');
+    void dock.offsetWidth;
+  }
+
+  document.querySelectorAll('.dock').forEach(buildDock);
+
+  /* main demo */
+  const main = document.getElementById('dock');
+  document.getElementById('replayOpen').addEventListener('click', () => { openInstant(main); setTimeout(() => toggle(main, true), 40); });
+  document.getElementById('replayClose').addEventListener('click', () => {
+    toggle(main, true);
+    setTimeout(() => toggle(main, false), 1100);
+  });
+  document.getElementById('toggle').addEventListener('click', () => toggle(main, !main.classList.contains('open')));
+
+  /* mini cards */
+  function cycleMini(d){
+    openInstant(d);
+    setTimeout(() => toggle(d, true), 40);
+    setTimeout(() => toggle(d, false), 1750);
+  }
+  document.querySelectorAll('[data-replay]').forEach(btn => {
+    btn.addEventListener('click', () => cycleMini(btn.closest('.vc').querySelector('[data-mini]')));
+  });
+  const minis = [...document.querySelectorAll('[data-mini]')];
+  minis.forEach((d, i) => setTimeout(() => cycleMini(d), 400 + i * 280));
+  setInterval(() => minis.forEach((d, i) => setTimeout(() => cycleMini(d), i * 280)), 4600);
+
+  /* slider-placement cards stay open so you can compare them */
+  document.querySelectorAll('.row:last-of-type .dock').forEach(d => {
+    d.classList.add('noanim');
+    toggle(d, true);
+    d.querySelector('.tbar').classList.add('expand');
+  });
+
+  openInstant(main);
+  setTimeout(() => toggle(main, true), 320);
+</script>
+
+</body>
+</html>

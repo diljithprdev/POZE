@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/poze_home_base">
+
+    <com.poze.app.ui.WaveBackgroundView
+        android:id="@+id/waveBg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:importantForAccessibility="no" />
+
+    <View
+        android:id="@+id/waveScrim"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/poze_home_scrim"
+        android:importantForAccessibility="no" />
+
+    <ScrollView
+        android:id="@+id/homeScroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@null"
+        android:clipToPadding="false"
+        android:fillViewport="true"
+        android:scrollbars="none">
+
+    <LinearLayout
+        android:id="@+id/homeContent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingStart="@dimen/gutter_home"
+        android:paddingTop="@dimen/space_xxl"
+        android:paddingEnd="@dimen/gutter_home"
+        android:paddingBottom="@dimen/space_xl">
+
+        <LinearLayout
+            android:id="@+id/brandBlock"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/wordmark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="serif"
+                android:gravity="center"
+                android:letterSpacing="0.12"
+                android:text="@string/brand_wordmark"
+                android:textColor="@color/poze_sand"
+                android:textSize="@dimen/text_wordmark"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="40dp"
+                android:layout_height="2dp"
+                android:layout_marginTop="@dimen/space_lg"
+                android:background="@color/poze_accent" />
+
+            <TextView
+                android:id="@+id/tvHeadline"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_lg"
+                android:gravity="center"
+                android:letterSpacing="0.01"
+                android:text="@string/home_headline"
+                android:textColor="@color/poze_home_text"
+                android:textSize="@dimen/text_body" />
+
+            <TextView
+                android:id="@+id/tvSub"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_sm"
+                android:gravity="center"
+                android:lineSpacingMultiplier="1.15"
+                android:text="@string/home_sub"
+                android:textColor="@color/poze_home_sub"
+                android:textSize="@dimen/text_caption" />
+        </LinearLayout>
+
+        <Space
+            android:id="@+id/homeSpacer"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:minHeight="@dimen/space_xxl" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/permissionRow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_permission_card"
+            android:minHeight="72dp"
+            android:paddingStart="@dimen/space_lg"
+            android:paddingTop="@dimen/space_md"
+            android:paddingEnd="@dimen/space_sm"
+            android:paddingBottom="@dimen/space_md">
+
+            <View
+                android:id="@+id/amberDot"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:background="@drawable/bg_amber_dot"
+                android:importantForAccessibility="no"
+                app:layout_constraintBottom_toBottomOf="@id/tvPermSub"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tvPermTitle" />
+
+            <TextView
+                android:id="@+id/tvPermTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_md"
+                android:ellipsize="end"
+                android:fontFamily="sans-serif-medium"
+                android:maxLines="1"
+                android:text="@string/overlay_permission_title"
+                android:textColor="@color/poze_on_surface"
+                android:textSize="@dimen/text_body_sm"
+                app:layout_constraintEnd_toStartOf="@id/guidelineGrant"
+                app:layout_constraintStart_toEndOf="@id/amberDot"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvPermSub"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_md"
+                android:layout_marginTop="3dp"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="@string/overlay_permission_subtitle"
+                android:textColor="@color/poze_home_body"
+                android:textSize="@dimen/text_caption"
+                app:layout_constraintEnd_toStartOf="@id/guidelineGrant"
+                app:layout_constraintStart_toEndOf="@id/amberDot"
+                app:layout_constraintTop_toBottomOf="@id/tvPermTitle" />
+
+            <Button
+                android:id="@+id/btnGrant"
+                android:layout_width="wrap_content"
+                android:layout_height="44dp"
+                android:layout_marginStart="@dimen/space_sm"
+                android:background="@drawable/bg_grant_button"
+                android:backgroundTint="@null"
+                android:fontFamily="sans-serif-medium"
+                android:minWidth="76dp"
+                android:minHeight="0dp"
+                android:paddingStart="@dimen/space_lg"
+                android:paddingEnd="@dimen/space_lg"
+                android:stateListAnimator="@null"
+                android:text="@string/grant"
+                android:textAllCaps="false"
+                android:textColor="@color/poze_on_accent"
+                android:textSize="@dimen/text_body_sm"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guidelineGrant"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.62" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:id="@+id/btnSelectImage"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:layout_marginTop="@dimen/space_md"
+            android:background="@drawable/bg_cta_button"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="@drawable/ripple_pill"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/iconTile"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:background="@drawable/bg_image_icon_tile"
+                android:contentDescription="@null"
+                android:padding="4dp"
+                android:src="@drawable/ic_image"
+                android:tint="@color/poze_home_icon_mountain" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_md"
+                android:fontFamily="sans-serif-medium"
+                android:letterSpacing="0.01"
+                android:text="@string/select_image"
+                android:textColor="@color/poze_on_accent"
+                android:textSize="@dimen/text_headline" />
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginStart="@dimen/space_sm"
+                android:alpha="0.7"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_chevron"
+                android:tint="@color/poze_on_accent" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvHint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_md"
+            android:gravity="center"
+            android:lineSpacingMultiplier="1.15"
+            android:text="@string/home_hint"
+            android:textColor="@color/poze_home_sub"
+            android:textSize="@dimen/text_caption" />
+    </LinearLayout>
+    </ScrollView>
+</FrameLayout>

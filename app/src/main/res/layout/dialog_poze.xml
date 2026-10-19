@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <View
+        android:id="@+id/dialogScrim"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/poze_scrim"
+        android:importantForAccessibility="no"
+        android:alpha="0" />
+
+    <LinearLayout
+        android:id="@+id/dialogCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="28dp"
+        android:layout_marginEnd="28dp"
+        android:background="@drawable/bg_dialog"
+        android:orientation="vertical"
+        android:paddingStart="24dp"
+        android:paddingTop="24dp"
+        android:paddingEnd="24dp"
+        android:paddingBottom="18dp">
+
+        <FrameLayout
+            android:id="@+id/dialogIconWrap"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            android:background="@drawable/bg_dialog_icon"
+            android:importantForAccessibility="no">
+
+            <ImageView
+                android:id="@+id/ivDialogIcon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_lock"
+                android:tint="@color/poze_accent_soft" />
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/tvDialogTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_lg"
+            android:fontFamily="sans-serif-medium"
+            android:letterSpacing="0.01"
+            android:textColor="@color/poze_dialog_text"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tvDialogMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_sm"
+            android:lineSpacingMultiplier="1.2"
+            android:textColor="@color/poze_home_body"
+            android:textSize="@dimen/text_body_sm" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="22dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/btnDialogNegative"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_ghost_button"
+                android:clickable="true"
+                android:focusable="true"
+                android:fontFamily="sans-serif-medium"
+                android:gravity="center"
+                android:textColor="@color/poze_on_surface_dim"
+                android:textSize="@dimen/text_body" />
+
+            <TextView
+                android:id="@+id/btnDialogPositive"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="@dimen/space_md"
+                android:layout_weight="1"
+                android:background="@drawable/bg_grant_button"
+                android:clickable="true"
+                android:focusable="true"
+                android:fontFamily="sans-serif-medium"
+                android:gravity="center"
+                android:textColor="@color/poze_on_accent"
+                android:textSize="@dimen/text_body" />
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>

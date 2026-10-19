@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="56dp"
+    android:layout_height="56dp"
+    android:background="@drawable/bubble_background"
+    android:contentDescription="@string/bubble_description"
+    android:elevation="10dp"
+    android:foreground="@drawable/ripple_circle"
+    android:stateListAnimator="@null">
+
+    <ImageView
+        android:id="@+id/ivBubbleIcon"
+        android:layout_width="52dp"
+        android:layout_height="52dp"
+        android:layout_gravity="center"
+        android:contentDescription="@null"
+        android:src="@drawable/ic_bubble_wordmark" />
+
+</FrameLayout>

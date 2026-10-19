@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="354" height="604" viewBox="0 0 354 604" font-family="Roboto, Arial, sans-serif">
+  <title>POZE — Overlay tool menu</title>
+  <desc>Floating tool menu, 86% of screen width, positioned and clamped to stay fully on screen.</desc>
+  <defs>
+    <linearGradient id="menuGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F2141D33"/>
+      <stop offset="0.5" stop-color="#CC1A2340"/>
+      <stop offset="1" stop-color="#F2141D33"/>
+    </linearGradient>
+    <clipPath id="frame"><rect x="0" y="0" width="354" height="604" rx="20"/></clipPath>
+  </defs>
+
+  <g id="overlay-menu" clip-path="url(#frame)">
+    <rect id="menu-surface" x="0" y="0" width="354" height="604" rx="20" fill="url(#menuGrad)" stroke="#3DFFFFFF"/>
+
+    <g id="menu-header">
+      <circle cx="22" cy="30" r="4" fill="#22C55E"/>
+      <text x="36" y="42" font-size="20" font-weight="800" letter-spacing="3.2" fill="#F8FAFC">POZE</text>
+      <g id="component-status-pill">
+        <rect x="252" y="20" width="84" height="22" rx="11" fill="#1A22C55E"/>
+        <text x="294" y="35" font-size="11" font-weight="500" text-anchor="middle" fill="#22C55E">Overlay Active</text>
+      </g>
+      <line id="menu-divider-top" x1="18" y1="53" x2="336" y2="53" stroke="#FFFFFF" stroke-opacity="0.12"/>
+    </g>
+
+    <g id="menu-section-overlay">
+      <text x="18" y="76" font-size="11" font-weight="500" letter-spacing="1.3" fill="#94A3B8">OVERLAY</text>
+      <g id="component-segmented-lock">
+        <rect x="18" y="84" width="318" height="44" rx="14" fill="#18223C" stroke="#26FFFFFF"/>
+        <rect x="20" y="86" width="157" height="40" rx="12" fill="#2563EB"/>
+        <text x="98" y="111" font-size="14" font-weight="700" text-anchor="middle" fill="#FFFFFF">Locked</text>
+        <text x="255" y="111" font-size="14" text-anchor="middle" fill="#94A3B8">Free</text>
+      </g>
+      <g id="component-segmented-grid">
+        <rect x="18" y="136" width="318" height="44" rx="14" fill="#18223C" stroke="#26FFFFFF"/>
+        <text x="98" y="163" font-size="14" text-anchor="middle" fill="#94A3B8">Grid off</text>
+        <rect x="177" y="138" width="157" height="40" rx="12" fill="#2563EB"/>
+        <text x="255" y="163" font-size="14" font-weight="700" text-anchor="middle" fill="#FFFFFF">Grid on</text>
+      </g>
+    </g>
+
+    <g id="menu-section-adjust">
+      <text x="18" y="207" font-size="11" font-weight="500" letter-spacing="1.3" fill="#94A3B8">ADJUST</text>
+
+      <g id="component-menu-row-rotate">
+        <rect x="18" y="215" width="318" height="50" rx="14" fill="#18223C" stroke="#26FFFFFF"/>
+        <g id="ic-rotate" transform="translate(30 229)">
+          <path d="M10 1 V6 M10 1 L6.5 4.5 M10 1 L13.5 4.5" fill="none" stroke="#94A3B8" stroke-width="1.6" stroke-linecap="round"/>
+          <path d="M17 12 A8 8 0 1 1 12.5 4.6" fill="none" stroke="#94A3B8" stroke-width="1.6" stroke-linecap="round"/>
+        </g>
+        <text x="66" y="246" font-size="15" fill="#F8FAFC">Rotate</text>
+        <text x="318" y="246" font-size="12" text-anchor="end" fill="#7A879B">90°</text>
+      </g>
+
+      <g id="component-segmented-opacity">
+        <rect x="18" y="273" width="318" height="44" rx="14" fill="#18223C" stroke="#26FFFFFF"/>
+        <text x="57" y="300" font-size="14" text-anchor="middle" fill="#94A3B8">25</text>
+        <text x="136" y="300" font-size="14" text-anchor="middle" fill="#94A3B8">50</text>
+        <text x="214" y="300" font-size="14" text-anchor="middle" fill="#94A3B8">75</text>
+        <rect x="255" y="275" width="79" height="40" rx="12" fill="#2563EB"/>
+        <text x="295" y="300" font-size="14" font-weight="700" text-anchor="middle" fill="#FFFFFF">100</text>
+      </g>
+
+      <g id="component-opacity-header">
+        <g id="ic-opacity" transform="translate(18 329)">
+          <circle cx="10" cy="10" r="8.5" fill="none" stroke="#94A3B8" stroke-width="1.6"/>
+          <path d="M10 3 V10 L14 12.5" fill="none" stroke="#94A3B8" stroke-width="1.6" stroke-linecap="round"/>
+        </g>
+        <text x="48" y="344" font-size="14" fill="#F8FAFC">Opacity</text>
+        <text x="336" y="344" font-size="14" font-weight="500" text-anchor="end" fill="#3B82F6">100%</text>
+      </g>
+
+      <g id="component-slider">
+        <rect x="18" y="351" width="318" height="8" rx="4" fill="#3A3A55"/>
+        <rect x="18" y="351" width="318" height="8" rx="4" fill="#2563EB"/>
+        <circle cx="336" cy="355" r="0" fill="none"/>
+        <rect x="325" y="347" width="22" height="16" rx="5" fill="#3B82F6" stroke="#FFFFFF" stroke-width="2"/>
+      </g>
+    </g>
+
+    <line id="menu-divider-bottom" x1="18" y1="385" x2="336" y2="385" stroke="#FFFFFF" stroke-opacity="0.12"/>
+
+    <g id="menu-section-session">
+      <text x="18" y="408" font-size="11" font-weight="500" letter-spacing="1.3" fill="#94A3B8">SESSION</text>
+
+      <g id="component-menu-row-reset">
+        <rect x="18" y="416" width="318" height="50" rx="14" fill="#18223C" stroke="#26FFFFFF"/>
+        <g id="ic-reset" transform="translate(30 430)">
+          <path d="M17 5 A8 8 0 1 0 17 15" fill="none" stroke="#94A3B8" stroke-width="1.6" stroke-linecap="round"/>
+          <path d="M17 1 V5.5 L13.5 3.2" fill="none" stroke="#94A3B8" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </g>
+        <text x="66" y="447" font-size="15" fill="#F8FAFC">Reset</text>
+      </g>
+
+      <g id="component-menu-row-close">
+        <rect x="18" y="474" width="318" height="50" rx="14" fill="#18223C" stroke="#26FFFFFF"/>
+        <g id="ic-close" transform="translate(30 488)">
+          <path d="M4 4 L16 16 M16 4 L4 16" fill="none" stroke="#94A3B8" stroke-width="1.8" stroke-linecap="round"/>
+        </g>
+        <text x="66" y="505" font-size="15" fill="#94A3B8">Close Menu</text>
+      </g>
+
+      <g id="component-button-danger">
+        <rect x="18" y="536" width="318" height="50" rx="14" fill="#DC2626"/>
+        <g id="ic-power" transform="translate(130 550)">
+          <path d="M10 2 V10" fill="none" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round"/>
+          <path d="M4.5 5.5 A8 8 0 1 0 15.5 5.5" fill="none" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round"/>
+        </g>
+        <text x="178" y="566" font-size="15" font-weight="500" fill="#FFFFFF">Stop Overlay</text>
+      </g>
+    </g>
+  </g>
+</svg>

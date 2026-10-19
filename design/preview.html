@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>POZE — Deep Calm design preview</title>
+<style>
+  :root{
+    /* ---- Base surfaces ---- */
+    --home-base:#12161C;
+    --home-end:#0F141A;
+    --primary-dark:#0E131A;
+    --menu-bg:#1B2129;
+    --menu-bg-alt:#212831;
+    --menu-border:#33404B;
+    --menu-border-soft:rgba(255,255,255,.165);
+    --divider:rgba(255,255,255,.12);
+
+    /* ---- Accent ---- */
+    --accent:#4E9EA6;
+    --accent-dark:#3E848B;
+    --accent-soft:#77C0C6;
+
+    /* ---- Text ---- */
+    --on-accent:#0E131A;
+    --on-primary:#FFFFFF;
+    --on-surface:#ECE9E2;
+    --on-surface-dim:#A6AFB7;
+    --tertiary:#79828B;
+
+    /* ---- Semantic ---- */
+    --sand:#DCC9A8;
+    --home-text:#E9E6DF;
+    --home-sub:#A6AFB7;
+    --home-body:#C6C2B9;
+    --amber:#D9B36B;
+    --red:#B85B4F;
+    --red-pressed:#9E4A40;
+    --green:#7FB391;
+    --tint-accent:#1F2E33;
+    --tint-danger:#2E2322;
+    --scrim:rgba(10,15,20,.76);
+
+    /* ---- Radii ---- */
+    --r-panel:22px; --r-dialog:24px; --r-row:16px; --r-control:12px; --r-tile:16px; --r-pill:26px;
+
+    /* ---- Motion ---- */
+    --ease:cubic-bezier(.2,.7,.2,1);
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    --serif:Georgia,"Times New Roman",serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  body{
+    background:#0B0E12; color:var(--on-surface); font-family:var(--sans);
+    padding:32px; display:flex; flex-direction:column; gap:40px; align-items:center;
+  }
+  h1{font-family:var(--serif); letter-spacing:.14em; color:var(--sand); font-size:26px; font-weight:700}
+  .cap{font-size:12px; letter-spacing:.12em; color:var(--tertiary); text-transform:uppercase; margin-bottom:10px; text-align:center}
+  .row{display:flex; gap:36px; flex-wrap:wrap; justify-content:center; align-items:flex-start}
+
+  /* Phone frame */
+  .phone{
+    width:340px; height:720px; border-radius:36px; background:var(--home-base);
+    border:1px solid #232a33; overflow:hidden; position:relative;
+    box-shadow:0 24px 60px rgba(0,0,0,.55);
+  }
+  .phone.sm{height:560px}
+
+  /* Entrance motion (mirrors PozeMotion.reveal) */
+  @keyframes reveal{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+  @keyframes fadein{from{opacity:0}to{opacity:1}}
+  .reveal{animation:reveal .3s var(--ease) both}
+  .fadein{animation:fadein .3s var(--ease) both}
+  @media (prefers-reduced-motion:reduce){.reveal,.fadein{animation:none}}
+  .pressable{transition:transform .12s var(--ease)}
+  .pressable:active{transform:scale(.96)}
+
+  /* Icons */
+  .ic{display:block}
+  .ic svg{display:block}
+
+  /* ============ HOME ============ */
+  .home{padding:24px 20px 20px; display:flex; flex-direction:column; height:100%}
+  .brand{display:flex; flex-direction:column; align-items:center; text-align:center}
+  .wordmark{font-family:var(--serif); font-weight:700; font-size:46px; letter-spacing:.12em; color:var(--sand); line-height:1}
+  .rule{width:40px; height:2px; background:var(--accent); margin-top:16px}
+  .headline{margin-top:16px; font-size:15px; color:var(--home-text); letter-spacing:.01em}
+  .sub{margin-top:8px; font-size:12px; color:var(--home-sub); line-height:1.15; max-width:280px}
+  .spacer{flex:1; min-height:24px}
+
+  .perm{
+    display:flex; align-items:center; gap:12px;
+    background:var(--menu-bg-alt); border:1px solid var(--menu-border); border-radius:var(--r-row);
+    padding:12px 8px 12px 16px; min-height:72px;
+  }
+  .perm .dot{width:10px; height:10px; border-radius:50%; background:var(--amber); flex:0 0 auto; align-self:flex-start; margin-top:5px}
+  .perm .txt{flex:1; min-width:0}
+  .perm .t{font-size:14px; font-weight:600; color:var(--on-surface)}
+  .perm .s{font-size:12px; color:var(--home-body); margin-top:3px}
+  .grant{
+    flex:0 0 auto; height:44px; padding:0 16px; border-radius:var(--r-control);
+    background:var(--accent); color:var(--on-accent); font-weight:600; font-size:14px;
+    display:flex; align-items:center; justify-content:center; border:none;
+  }
+  .grant:active{background:var(--accent-dark)}
+
+  .cta{
+    margin-top:12px; height:64px; border-radius:var(--r-pill); background:var(--accent);
+    display:flex; align-items:center; justify-content:center; gap:12px;
+    color:var(--on-accent); font-weight:600; font-size:16px;
+  }
+  .cta:active{background:var(--accent-pressed,#3E848B)}
+  .cta .tile{width:28px; height:28px; border-radius:7px; background:#fff; display:flex; align-items:center; justify-content:center}
+  .cta .chev{opacity:.7}
+  .hint{margin-top:12px; font-size:12px; color:var(--home-sub); text-align:center; line-height:1.15}
+
+  /* ============ GALLERY ============ */
+  .gal{padding:12px 24px 16px; display:flex; flex-direction:column; height:100%}
+  .galhead{display:flex; align-items:center; height:48px; gap:8px}
+  .iconbtn{width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex:0 0 auto}
+  .iconbtn.plain{width:48px; height:48px}
+  .iconbtn.ghost{border:1.5px solid var(--menu-border)}
+  .iconbtn.accent{background:var(--accent)}
+  .galhead .title{flex:1; font-size:20px; font-weight:600; color:var(--home-text); letter-spacing:.01em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+  .grid{display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:12px; overflow:hidden}
+  .tile{display:flex; flex-direction:column; gap:8px; padding:4px}
+  .thumb{height:150px; border-radius:var(--r-tile); background:var(--menu-bg-alt); border:1px solid var(--menu-border); position:relative; display:flex; align-items:center; justify-content:center; color:#3b4653}
+  .badge{position:absolute; top:6px; right:6px; width:26px; height:26px; border-radius:50%; background:var(--red); border:2px solid var(--primary-dark); display:flex; align-items:center; justify-content:center}
+  .tile .name{font-size:12px; font-weight:600; color:var(--on-surface); padding:0 4px}
+  .tile .date{font-size:11px; color:var(--tertiary); padding:0 4px}
+
+  .empty{flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; gap:16px; margin-top:24px}
+  .empty .ring{width:72px; height:72px; border-radius:50%; background:var(--menu-bg-alt); border:1px solid var(--menu-border-soft); display:flex; align-items:center; justify-content:center}
+  .empty .et{font-size:16px; font-weight:600; color:var(--home-text)}
+  .empty .es{font-size:12px; color:var(--home-sub); max-width:240px; line-height:1.2}
+  .galhint{text-align:center; font-size:11px; color:var(--tertiary); margin:8px 0}
+  .ghostbtn{
+    height:50px; border-radius:var(--r-row); border:1.5px solid var(--accent-soft); background:transparent;
+    color:var(--accent-soft); font-weight:600; font-size:15px; display:flex; align-items:center; justify-content:center;
+  }
+  .ghostbtn:active{background:var(--tint-accent)}
+
+  /* floating bubble */
+  .bubble{
+    position:absolute; right:22px; bottom:120px; width:56px; height:56px; border-radius:50%;
+    background:var(--accent); display:flex; align-items:center; justify-content:center;
+    box-shadow:0 10px 24px rgba(0,0,0,.5);
+  }
+  .bubble:active{background:var(--accent-dark)}
+
+  /* ============ OVERLAY MENU ============ */
+  .menu{
+    width:322px; background:var(--menu-bg); border:1px solid var(--menu-border-soft);
+    border-radius:var(--r-panel); padding:18px; display:flex; flex-direction:column;
+    box-shadow:0 20px 50px rgba(0,0,0,.5);
+  }
+  .menu .mhead{display:flex; align-items:center; gap:10px}
+  .menu .mhead .dot{width:8px; height:8px; border-radius:50%; background:var(--green)}
+  .menu .mhead .mt{flex:1; font-family:var(--serif); font-weight:700; font-size:20px; letter-spacing:.14em; color:var(--sand)}
+  .statuspill{background:rgba(127,179,145,.12); color:var(--green); font-size:11px; font-weight:600; padding:5px 10px; border-radius:20px}
+  .hr{height:1px; background:var(--divider); margin:12px 0}
+  .label{font-size:11px; font-weight:600; letter-spacing:.12em; color:var(--on-surface-dim); margin:12px 0 8px}
+  .segrow{display:flex; height:44px; background:var(--menu-bg-alt); border:1px solid var(--menu-border-soft); border-radius:var(--r-row); padding:2px}
+  .seg{flex:1; display:flex; align-items:center; justify-content:center; font-size:14px; border-radius:var(--r-control); color:var(--on-surface-dim)}
+  .seg.on{background:var(--accent); color:var(--on-accent); font-weight:700}
+  .mrow{display:flex; align-items:center; height:50px; background:var(--menu-bg-alt); border:1px solid var(--menu-border-soft); border-radius:var(--r-row); padding:0 12px; gap:12px; margin-top:8px}
+  .mrow .mtxt{flex:1; font-size:15px; color:var(--on-surface)}
+  .mrow .mval{font-size:12px; font-weight:600; color:var(--tertiary)}
+  .oplabel{display:flex; align-items:center; gap:12px; margin-top:12px}
+  .oplabel .o1{flex:1; font-size:14px; color:var(--on-surface)}
+  .oplabel .o2{font-size:14px; font-weight:600; color:var(--accent-soft)}
+  .slider{margin-top:6px; height:24px; display:flex; align-items:center}
+  .track{width:100%; height:4px; border-radius:4px; background:var(--menu-bg-alt); position:relative}
+  .track .fill{position:absolute; left:0; top:0; bottom:0; width:100%; background:var(--accent); border-radius:4px}
+  .track .thumb{position:absolute; right:-9px; top:50%; transform:translateY(-50%); width:18px; height:18px; border-radius:50%; background:#fff; border:3px solid var(--accent)}
+  .stop{margin-top:12px; height:50px; border-radius:var(--r-row); background:var(--red); color:var(--on-primary); font-weight:600; font-size:15px; display:flex; align-items:center; justify-content:center; gap:8px}
+  .stop:active{background:var(--red-pressed)}
+  .closerow{margin-top:8px}
+
+  /* ============ DIALOG ============ */
+  .overlaywrap{position:absolute; inset:0; background:var(--scrim); display:flex; align-items:center; justify-content:center; animation:fadein .3s var(--ease) both}
+  .card{
+    width:calc(100% - 56px); background:var(--menu-bg); border:1px solid var(--menu-border);
+    border-radius:var(--r-dialog); padding:24px 24px 18px;
+    animation:reveal .3s var(--ease) both;
+  }
+  .card .icwrap{width:46px; height:46px; border-radius:50%; display:flex; align-items:center; justify-content:center}
+  .card .icwrap.ok{background:var(--tint-accent)}
+  .card .icwrap.danger{background:var(--tint-danger)}
+  .card .dtitle{margin-top:16px; font-size:18px; font-weight:600; color:var(--on-surface); letter-spacing:.01em}
+  .card .dmsg{margin-top:8px; font-size:14px; color:var(--home-body); line-height:1.2}
+  .dacts{display:flex; gap:12px; margin-top:22px}
+  .dbtn{flex:1; height:48px; border-radius:var(--r-row); display:flex; align-items:center; justify-content:center; font-weight:600; font-size:15px}
+  .dbtn.neg{border:1.5px solid var(--accent-soft); color:var(--on-surface-dim)}
+  .dbtn.neg:active{background:var(--tint-accent)}
+  .dbtn.pos{background:var(--accent); color:var(--on-accent); border-radius:var(--r-control)}
+  .dbtn.pos:active{background:var(--accent-dark)}
+  .dbtn.danger{background:var(--red); color:var(--on-primary); border-radius:var(--r-control)}
+  .dbtn.danger:active{background:var(--red-pressed)}
+
+  /* ============ TOAST ============ */
+  .toast{
+    position:absolute; left:50%; bottom:24px; transform:translateX(-50%);
+    display:flex; align-items:center; gap:12px;
+    background:var(--menu-bg); border:1px solid var(--menu-border-soft); border-radius:var(--r-pill);
+    padding:12px 18px 12px 16px; box-shadow:0 12px 30px rgba(0,0,0,.5);
+    animation:reveal .3s var(--ease) both; white-space:nowrap;
+  }
+  .toast .dot{width:8px; height:8px; border-radius:50%; background:var(--green)}
+  .toast .tt{font-size:14px; font-weight:600; color:var(--on-surface)}
+
+  /* ============ SWATCHES ============ */
+  .swatches{display:flex; flex-wrap:wrap; gap:10px; max-width:900px; justify-content:center}
+  .sw{width:112px; border-radius:12px; overflow:hidden; border:1px solid #232a33}
+  .sw .c{height:52px}
+  .sw .n{padding:6px 8px; font-size:10px; color:var(--on-surface-dim); background:#141922; letter-spacing:.02em}
+</style>
+</head>
+<body>
+
+  <h1>POZE · Deep Calm</h1>
+  <div class="cap">Static preview of the restyled Android UI — exact tokens, no build</div>
+
+  <div class="row">
+
+    <!-- ============ HOME ============ -->
+    <div>
+      <div class="cap">Home</div>
+      <div class="phone">
+        <div class="home">
+          <div class="brand reveal">
+            <div class="wordmark">POZE</div>
+            <div class="rule"></div>
+            <div class="headline">Reference Image Overlay Tool</div>
+            <div class="sub">Float a reference over any app and align your shot.</div>
+          </div>
+
+          <div class="spacer"></div>
+
+          <div class="perm reveal" style="animation-delay:.08s">
+            <span class="dot"></span>
+            <div class="txt">
+              <div class="t">Overlay permission</div>
+              <div class="s">Needed to float over other apps</div>
+            </div>
+            <button class="grant pressable">Grant</button>
+          </div>
+
+          <div class="cta reveal pressable" style="animation-delay:.14s">
+            <span class="tile">
+              <span class="ic" style="color:#0E131A">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.6"/><path d="M21 15l-5-5L5 21"/></svg>
+              </span>
+            </span>
+            <span>Select Image</span>
+            <span class="chev ic">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0E131A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+            </span>
+          </div>
+
+          <div class="hint fadein" style="animation-delay:.22s">Pick a reference, then drag the blue bubble over the camera app.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ GALLERY (populated) ============ -->
+    <div>
+      <div class="cap">Gallery · with saved images</div>
+      <div class="phone">
+        <div class="gal">
+          <div class="galhead">
+            <div class="iconbtn plain pressable" style="margin-left:-12px">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#E9E6DF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+            </div>
+            <div class="title">Choose reference</div>
+            <div class="iconbtn ghost pressable">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#A6AFB7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/></svg>
+            </div>
+            <div class="iconbtn accent pressable">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0E131A" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+            </div>
+          </div>
+
+          <div class="grid">
+            <div class="tile reveal" style="animation-delay:.04s">
+              <div class="thumb"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.6"/><path d="M21 15l-5-5L5 21"/></svg></div>
+              <div class="name">IMG_1742</div>
+              <div class="date">12 Mar</div>
+            </div>
+            <div class="tile reveal" style="animation-delay:.08s">
+              <div class="thumb"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.6"/><path d="M21 15l-5-5L5 21"/></svg></div>
+              <div class="name">IMG_1739</div>
+              <div class="date">11 Mar</div>
+            </div>
+          </div>
+
+          <div style="flex:1"></div>
+          <div class="galhint">Need a one-off? It stays in your gallery.</div>
+          <div class="ghostbtn pressable">Select from gallery</div>
+        </div>
+        <div class="bubble pressable" title="Floating overlay bubble">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0E131A" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5L20 6.5"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ GALLERY (empty) ============ -->
+    <div>
+      <div class="cap">Gallery · empty</div>
+      <div class="phone">
+        <div class="gal">
+          <div class="galhead">
+            <div class="iconbtn plain pressable" style="margin-left:-12px">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#E9E6DF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+            </div>
+            <div class="title">Choose reference</div>
+            <div class="iconbtn accent pressable">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0E131A" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+            </div>
+          </div>
+
+          <div class="empty fadein">
+            <div class="ring">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#77C0C6" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.6"/><path d="M21 15l-5-5L5 21"/></svg>
+            </div>
+            <div>
+              <div class="et">No Saved Images</div>
+              <div class="es">Tap + to add a reference from your gallery.</div>
+            </div>
+          </div>
+
+          <div class="galhint">Need a one-off? It stays in your gallery.</div>
+          <div class="ghostbtn pressable">Select from gallery</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ============ DIALOGS + TOAST ============ -->
+  <div class="row">
+
+    <div>
+      <div class="cap">Permission dialog + toast</div>
+      <div class="phone sm">
+        <div class="home" style="filter:blur(1px); opacity:.9">
+          <div class="brand"><div class="wordmark">POZE</div><div class="rule"></div>
+            <div class="headline">Reference Image Overlay Tool</div></div>
+          <div class="spacer"></div>
+          <div class="cta"><span>Select Image</span></div>
+        </div>
+
+        <div class="overlaywrap">
+          <div class="card">
+            <div class="icwrap ok">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#77C0C6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2.5"/><path d="M8 10V7a4 4 0 018 0v3"/></svg>
+            </div>
+            <div class="dtitle">Permission required</div>
+            <div class="dmsg">POZE needs permission to display over other apps. This is required for the reference overlay to work.</div>
+            <div class="dacts">
+              <div class="dbtn neg pressable">Cancel</div>
+              <div class="dbtn pos pressable">Grant Permission</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="toast" style="animation-delay:.15s">
+          <span class="dot"></span>
+          <span class="tt">Overlay permission is required</span>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="cap">Destructive dialog (delete)</div>
+      <div class="phone sm">
+        <div class="gal" style="filter:blur(1px); opacity:.9">
+          <div class="galhead"><div class="title">Choose reference</div></div>
+          <div class="grid">
+            <div class="tile"><div class="thumb"></div><div class="name">IMG_1742</div></div>
+            <div class="tile"><div class="thumb"></div><div class="name">IMG_1739</div></div>
+          </div>
+        </div>
+
+        <div class="overlaywrap">
+          <div class="card">
+            <div class="icwrap danger">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#B85B4F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/></svg>
+            </div>
+            <div class="dtitle">Delete image?</div>
+            <div class="dmsg">This removes the image from POZE. This cannot be undone.</div>
+            <div class="dacts">
+              <div class="dbtn neg pressable">Cancel</div>
+              <div class="dbtn danger pressable">Delete</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ OVERLAY MENU ============ -->
+    <div>
+      <div class="cap">Overlay tool menu (floating)</div>
+      <div class="menu">
+        <div class="mhead">
+          <span class="dot"></span>
+          <span class="mt">POZE</span>
+          <span class="statuspill">Overlay Active</span>
+        </div>
+        <div class="hr"></div>
+
+        <div class="label" style="margin-top:0">OVERLAY</div>
+        <div class="segrow">
+          <div class="seg on">Locked</div>
+          <div class="seg">Free</div>
+        </div>
+        <div class="segrow" style="margin-top:8px">
+          <div class="seg">Grid off</div>
+          <div class="seg on">Grid on</div>
+        </div>
+
+        <div class="label">ADJUST</div>
+        <div class="mrow" style="margin-top:0">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#A6AFB7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 11-3-6.7"/><path d="M21 4v5h-5"/></svg>
+          <span class="mtxt">Rotate</span>
+          <span class="mval">90°</span>
+        </div>
+        <div class="segrow" style="margin-top:8px">
+          <div class="seg">25</div>
+          <div class="seg">50</div>
+          <div class="seg">75</div>
+          <div class="seg on">100</div>
+        </div>
+
+        <div class="oplabel">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#A6AFB7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 010 18z" fill="#A6AFB7" stroke="none"/></svg>
+          <span class="o1">Opacity</span>
+          <span class="o2">100%</span>
+        </div>
+        <div class="slider">
+          <div class="track"><div class="fill"></div><div class="thumb"></div></div>
+        </div>
+
+        <div class="hr"></div>
+        <div class="label" style="margin-top:0">SESSION</div>
+
+        <div class="mrow" style="margin-top:0">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#A6AFB7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 109-9 9 9 0 00-7.7 4.3"/><path d="M3 4v5h5"/></svg>
+          <span class="mtxt">Reset</span>
+        </div>
+        <div class="mrow closerow">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#A6AFB7" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+          <span class="mtxt" style="color:var(--on-surface-dim)">Close Menu</span>
+        </div>
+
+        <div class="stop pressable">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round"><path d="M12 3v9"/><path d="M6.5 6.5a8 8 0 1111 0"/></svg>
+          <span>Stop Overlay</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ============ TOKENS ============ -->
+  <div>
+    <div class="cap" style="margin-top:8px">Deep Calm tokens</div>
+    <div class="swatches" id="swatches"></div>
+  </div>
+
+<script>
+  const tokens = [
+    ["home_base","#12161C"],["menu_bg","#1B2129"],["menu_bg_alt","#212831"],
+    ["menu_border","#33404B"],["accent","#4E9EA6"],["accent_dark","#3E848B"],
+    ["accent_soft","#77C0C6"],["on_accent","#0E131A"],["on_surface","#ECE9E2"],
+    ["on_surface_dim","#A6AFB7"],["sand","#DCC9A8"],["home_amber","#D9B36B"],
+    ["green_active","#7FB391"],["red_stop","#B85B4F"]
+  ];
+  document.getElementById("swatches").innerHTML = tokens.map(([n,c]) =>
+    `<div class="sw"><div class="c" style="background:${c}"></div><div class="n">${n}<br>${c}</div></div>`
+  ).join("");
+</script>
+
+</body>
+</html>

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    POZE floating tool bar — a vertical pill that lives in the bubble's own column.
+    The bubble stays put on top; the bar hangs directly under it and grows downward
+    out of the bubble's bottom edge, folding back up into it on close.
+    Opacity expands inline as a vertical slider, so the bar only ever gets taller.
+-->
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/menuRoot"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:clipChildren="false"
+    android:clipToPadding="false">
+
+    <View
+        android:id="@+id/barBg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_tool_bar" />
+
+    <LinearLayout
+        android:id="@+id/tbrow"
+        android:layout_width="@dimen/touch_row_plus"
+        android:layout_height="wrap_content"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/space_sm"
+        android:paddingBottom="@dimen/space_sm">
+
+        <ImageButton
+            android:id="@+id/btnLock"
+            style="@style/ToolBarIcon"
+            android:contentDescription="@string/ic_lock_description"
+            android:src="@drawable/ic_lock" />
+
+        <ImageButton
+            android:id="@+id/btnGrid"
+            style="@style/ToolBarIcon"
+            android:layout_marginTop="@dimen/space_xs"
+            android:contentDescription="@string/ic_grid_description"
+            android:src="@drawable/ic_grid" />
+
+        <ImageButton
+            android:id="@+id/btnRotate"
+            style="@style/ToolBarIcon"
+            android:layout_marginTop="@dimen/space_xs"
+            android:contentDescription="@string/ic_rotate_description"
+            android:src="@drawable/ic_rotate" />
+
+        <ImageButton
+            android:id="@+id/btnOpacity"
+            style="@style/ToolBarIcon"
+            android:layout_marginTop="@dimen/space_xs"
+            android:contentDescription="@string/ic_opacity_description"
+            android:src="@drawable/ic_opacity" />
+
+        <LinearLayout
+            android:id="@+id/opacityWrap"
+            android:layout_width="@dimen/touch_row_plus"
+            android:layout_height="0dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <com.poze.app.overlay.RectSlider
+                android:id="@+id/rectSlider"
+                android:layout_width="@dimen/touch_segment"
+                android:layout_height="@dimen/overlay_opacity_track"
+                android:layout_marginTop="@dimen/space_xs"
+                android:contentDescription="@string/menu_opacity" />
+
+            <TextView
+                android:id="@+id/tvOpacityValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_xs"
+                android:fontFamily="sans-serif-medium"
+                android:gravity="center"
+                android:minWidth="34dp"
+                android:text="@string/opacity_value"
+                android:textColor="@color/poze_accent_soft"
+                android:textSize="@dimen/text_label" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="26dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@color/poze_divider"
+            android:importantForAccessibility="no" />
+
+        <ImageButton
+            android:id="@+id/btnGallery"
+            style="@style/ToolBarIcon"
+            android:contentDescription="@string/ic_gallery_description"
+            android:src="@drawable/ic_image"
+            android:tint="@color/poze_accent_soft" />
+
+        <ImageButton
+            android:id="@+id/btnReset"
+            style="@style/ToolBarIcon"
+            android:layout_marginTop="@dimen/space_xs"
+            android:contentDescription="@string/ic_reset_description"
+            android:src="@drawable/ic_reset" />
+
+        <ImageButton
+            android:id="@+id/btnClose"
+            style="@style/ToolBarIcon"
+            android:layout_marginTop="@dimen/space_xs"
+            android:contentDescription="@string/ic_close_description"
+            android:src="@drawable/ic_close" />
+
+        <ImageButton
+            android:id="@+id/btnStop"
+            style="@style/ToolBarIcon"
+            android:layout_marginTop="@dimen/space_xs"
+            android:contentDescription="@string/ic_stop_description"
+            android:src="@drawable/ic_power"
+            android:tint="@color/poze_red_stop" />
+    </LinearLayout>
+</FrameLayout>

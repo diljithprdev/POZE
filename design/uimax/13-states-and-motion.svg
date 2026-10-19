@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="520" viewBox="0 0 1000 520" font-family="Roboto, Arial, sans-serif">
+  <title>POZE — States and motion</title>
+  <desc>Interaction states, motion timings and accessibility notes used across the app.</desc>
+
+  <text x="40" y="40" font-size="11" font-weight="500" letter-spacing="2" fill="#94A3B8">INTERACTION STATES</text>
+
+  <g id="state-ripple-overlay">
+    <text x="40" y="76" font-size="11" fill="#7A879B">state-ripple</text>
+    <rect x="40" y="88" width="200" height="56" rx="16" fill="#18223C" stroke="#26FFFFFF"/>
+    <rect x="40" y="88" width="200" height="56" rx="16" fill="#FFFFFF" fill-opacity="0.12"/>
+    <text x="140" y="121" font-size="15" text-anchor="middle" fill="#F8FAFC">row pressed</text>
+  </g>
+
+  <g id="state-segment-selection-change">
+    <text x="270" y="76" font-size="11" fill="#7A879B">state-segment-selection</text>
+    <rect x="270" y="88" width="120" height="44" rx="14" fill="#18223C" stroke="#26FFFFFF"/>
+    <rect x="272" y="90" width="116" height="40" rx="12" fill="#2563EB" opacity="0.6"/>
+    <rect x="392" y="88" width="120" height="44" rx="14" fill="#18223C" stroke="#26FFFFFF"/>
+    <rect x="394" y="90" width="116" height="40" rx="12" fill="#2563EB"/>
+    <text x="330" y="115" font-size="14" font-weight="700" text-anchor="middle" fill="#FFFFFF">140ms</text>
+    <text x="452" y="115" font-size="14" font-weight="700" text-anchor="middle" fill="#FFFFFF">settled</text>
+  </g>
+
+  <g id="state-gallery-item-pressed">
+    <text x="542" y="76" font-size="11" fill="#7A879B">state-gallery-item-pressed</text>
+    <rect x="542" y="88" width="86" height="56" rx="14" fill="#18223C" stroke="#334155"/>
+    <rect x="542" y="88" width="86" height="56" rx="14" fill="#FFFFFF" fill-opacity="0.1"/>
+  </g>
+
+  <g id="state-thumbnail-delete-badge">
+    <text x="658" y="76" font-size="11" fill="#7A879B">state-thumbnail-delete-badge</text>
+    <circle cx="686" cy="112" r="15" fill="#0B1220" opacity="0.55"/>
+    <circle cx="686" cy="110" r="13" fill="#DC2626" stroke="#0B1220" stroke-width="2"/>
+    <path d="M680 110 L692 110" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round"/>
+  </g>
+
+  <g id="state-slider-active">
+    <text x="728" y="76" font-size="11" fill="#7A879B">state-slider-active</text>
+    <rect x="728" y="94" width="120" height="8" rx="4" fill="#3A3A55"/>
+    <rect x="728" y="94" width="78" height="8" rx="4" fill="#2563EB"/>
+    <rect x="791" y="89" width="26" height="19" rx="5" fill="#3B82F6" stroke="#FFFFFF" stroke-width="2"/>
+  </g>
+
+  <g id="state-bubble-dragging">
+    <text x="880" y="76" font-size="11" fill="#7A879B">state-bubble-dragging</text>
+    <circle cx="906" cy="116" r="34" fill="#000000" opacity="0.3"/>
+    <circle cx="906" cy="114" r="28" fill="#1D4ED8"/>
+    <circle cx="906" cy="114" r="28" fill="#FFFFFF" opacity="0.12"/>
+    <path d="M897 114 L903 120 L916 107" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <g id="state-home-permission-card-hidden">
+    <text x="40" y="196" font-size="11" fill="#7A879B">state-home-permission-hidden · card removed, CTA stays anchored</text>
+    <rect x="40" y="208" width="371" height="64" rx="22" fill="#0D1B3B" stroke="#79A8FF" stroke-width="1.5"/>
+    <text x="225" y="246" font-size="16" font-weight="500" text-anchor="middle" fill="#FFFFFF">Select Image</text>
+  </g>
+
+  <g id="state-gallery-empty">
+    <text x="450" y="196" font-size="11" fill="#7A879B">state-gallery-empty</text>
+    <rect x="450" y="208" width="371" height="64" rx="16" fill="#0FFFFFFF" stroke="#26FFFFFF" stroke-dasharray="4 4"/>
+    <circle cx="486" cy="240" r="14" fill="#141F3A" stroke="#26FFFFFF"/>
+    <rect x="481" y="235" width="10" height="9" fill="none" stroke="#94A3B8" stroke-width="1.2"/>
+    <text x="510" y="236" font-size="14" font-weight="500" fill="#E2E8F0">No Saved Images</text>
+    <text x="510" y="254" font-size="11" fill="#7A879B">Tap + to add a reference from your gallery.</text>
+  </g>
+
+  <text x="40" y="320" font-size="11" font-weight="500" letter-spacing="2" fill="#94A3B8">MOTION</text>
+
+  <g id="motion-home-entrance">
+    <text x="40" y="348" font-size="11" fill="#7A879B">home entrance</text>
+    <rect x="40" y="360" width="4" height="52" rx="2" fill="#2563EB"/>
+    <text x="56" y="378" font-size="12" fill="#C3CEDE">brand block — alpha 0 to 1, translateY 16 to 0, 280ms, decelerate 1.6</text>
+    <text x="56" y="398" font-size="12" fill="#C3CEDE">primary CTA — same curve, 120ms delay, 260ms</text>
+    <text x="56" y="418" font-size="12" fill="#C3CEDE">hint line — alpha only, 220ms delay, 240ms</text>
+  </g>
+
+  <g id="motion-overlay-menu">
+    <text x="560" y="348" font-size="11" fill="#7A879B">overlay menu window</text>
+    <rect x="560" y="360" width="4" height="52" rx="2" fill="#8B5CF6"/>
+    <text x="576" y="378" font-size="12" fill="#C3CEDE">enter — alpha 0 to 1 and scale 0.94 to 1.0, 180ms</text>
+    <text x="576" y="398" font-size="12" fill="#C3CEDE">exit — alpha 1 to 0 and scale 1.0 to 0.96, 140ms</text>
+    <text x="576" y="418" font-size="12" fill="#C3CEDE">pivot at top edge, so the panel grows from the bubble</text>
+  </g>
+
+  <g id="motion-feedback">
+    <text x="40" y="462" font-size="11" fill="#7A879B">feedback</text>
+    <rect x="40" y="474" width="4" height="26" rx="2" fill="#22C55E"/>
+    <text x="56" y="492" font-size="12" fill="#C3CEDE">segment change 140ms · permission card 220ms · gallery tiles stagger 40ms up to 240ms, 240ms each</text>
+  </g>
+
+  <g id="accessibility-notes">
+    <text x="40" y="524" font-size="11" fill="#7A879B">All motion is skipped when the system animator duration scale is 0. Touch targets: 48dp minimum, minus badge 48dp, menu rows 50dp, segments 44dp.</text>
+  </g>
+</svg>

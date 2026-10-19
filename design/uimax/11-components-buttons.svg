@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="360" viewBox="0 0 1000 360" font-family="Roboto, Arial, sans-serif">
+  <title>POZE — Button components and states</title>
+  <defs>
+    <linearGradient id="grantGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#4F8CFF"/>
+      <stop offset="1" stop-color="#2563EB"/>
+    </linearGradient>
+  </defs>
+
+  <text x="40" y="40" font-size="11" font-weight="500" letter-spacing="2" fill="#94A3B8">BUTTONS AND STATES</text>
+
+  <g id="component-button-primary">
+    <text x="40" y="72" font-size="11" fill="#7A879B">component-button-primary</text>
+    <rect x="40" y="84" width="300" height="64" rx="22" fill="#0D1B3B" stroke="#79A8FF" stroke-width="1.5"/>
+    <rect x="128" y="103" width="26" height="26" rx="6" fill="#FAFFFFFF"/>
+    <rect x="135" y="110" width="12" height="10" fill="none" stroke="#214B9B" stroke-width="1.4"/>
+    <path d="M135 119 L139.5 113.5 L142.5 117 L145 114.5 L147 119 Z" fill="#214B9B"/>
+    <text x="166" y="122" font-size="16" font-weight="500" fill="#FFFFFF">Select Image</text>
+    <path d="M292 110 L298 116 L292 122" fill="none" stroke="#E2E8F0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.7"/>
+  </g>
+
+  <g id="state-button-primary-pressed">
+    <text x="380" y="72" font-size="11" fill="#7A879B">state-button-primary-pressed</text>
+    <rect x="380" y="84" width="300" height="64" rx="22" fill="#122657" stroke="#79A8FF" stroke-width="1.5"/>
+    <rect x="468" y="103" width="26" height="26" rx="6" fill="#FAFFFFFF"/>
+    <rect x="475" y="110" width="12" height="10" fill="none" stroke="#214B9B" stroke-width="1.4"/>
+    <path d="M475 119 L479.5 113.5 L482.5 117 L485 114.5 L487 119 Z" fill="#214B9B"/>
+    <text x="506" y="122" font-size="16" font-weight="500" fill="#FFFFFF">Select Image</text>
+    <path d="M632 110 L638 116 L632 122" fill="none" stroke="#E2E8F0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.7"/>
+  </g>
+
+  <g id="component-button-ghost">
+    <text x="720" y="72" font-size="11" fill="#7A879B">component-button-ghost</text>
+    <rect x="720" y="84" width="240" height="50" rx="14" fill="#0FFFFFFF" stroke="#3B82F6" stroke-width="1.5"/>
+    <text x="840" y="114" font-size="15" font-weight="500" text-anchor="middle" fill="#3B82F6">Select from gallery</text>
+  </g>
+
+  <g id="state-button-ghost-pressed">
+    <text x="720" y="162" font-size="11" fill="#7A879B">state-button-ghost-pressed</text>
+    <rect x="720" y="174" width="240" height="50" rx="14" fill="#14224A" stroke="#3B82F6" stroke-width="1.5"/>
+    <text x="840" y="204" font-size="15" font-weight="500" text-anchor="middle" fill="#3B82F6">Select from gallery</text>
+  </g>
+
+  <g id="component-button-danger">
+    <text x="40" y="190" font-size="11" fill="#7A879B">component-button-danger</text>
+    <rect x="40" y="202" width="220" height="50" rx="14" fill="#DC2626"/>
+    <g transform="translate(108 216)">
+      <path d="M10 2 V10" fill="none" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round"/>
+      <path d="M4.5 5.5 A8 8 0 1 0 15.5 5.5" fill="none" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round"/>
+    </g>
+    <text x="156" y="232" font-size="15" font-weight="500" fill="#FFFFFF">Stop Overlay</text>
+  </g>
+
+  <g id="state-button-danger-pressed">
+    <text x="300" y="190" font-size="11" fill="#7A879B">state-button-danger-pressed</text>
+    <rect x="300" y="202" width="220" height="50" rx="14" fill="#B91C1C"/>
+    <g transform="translate(368 216)">
+      <path d="M10 2 V10" fill="none" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round"/>
+      <path d="M4.5 5.5 A8 8 0 1 0 15.5 5.5" fill="none" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round"/>
+    </g>
+    <text x="416" y="232" font-size="15" font-weight="500" fill="#FFFFFF">Stop Overlay</text>
+  </g>
+
+  <g id="component-button-grant">
+    <text x="560" y="190" font-size="11" fill="#7A879B">component-button-grant · 44dp</text>
+    <rect x="560" y="202" width="120" height="44" rx="4" fill="url(#grantGrad)"/>
+    <text x="620" y="229" font-size="14" font-weight="500" text-anchor="middle" fill="#FFFFFF">Grant</text>
+  </g>
+
+  <g id="state-button-grant-pressed">
+    <text x="560" y="282" font-size="11" fill="#7A879B">state-button-grant-pressed</text>
+    <rect x="560" y="294" width="120" height="44" rx="4" fill="#2563EB"/>
+    <text x="620" y="321" font-size="14" font-weight="500" text-anchor="middle" fill="#FFFFFF">Grant</text>
+  </g>
+
+  <g id="component-menu-row">
+    <text x="720" y="278" font-size="11" fill="#7A879B">component-menu-row · 50dp</text>
+    <rect x="720" y="290" width="240" height="50" rx="14" fill="#18223C" stroke="#26FFFFFF"/>
+    <g transform="translate(732 304)">
+      <path d="M10 1 V6 M10 1 L6.5 4.5 M10 1 L13.5 4.5" fill="none" stroke="#94A3B8" stroke-width="1.6" stroke-linecap="round"/>
+      <path d="M17 12 A8 8 0 1 1 12.5 4.6" fill="none" stroke="#94A3B8" stroke-width="1.6" stroke-linecap="round"/>
+    </g>
+    <text x="768" y="321" font-size="15" fill="#F8FAFC">Rotate</text>
+    <text x="940" y="321" font-size="12" text-anchor="end" fill="#7A879B">90°</text>
+  </g>
+
+  <g id="component-menu-row-close">
+    <text x="300" y="278" font-size="11" fill="#7A879B">component-menu-row-muted</text>
+    <rect x="300" y="290" width="240" height="50" rx="14" fill="#18223C" stroke="#26FFFFFF"/>
+    <g transform="translate(312 304)">
+      <path d="M4 4 L16 16 M16 4 L4 16" fill="none" stroke="#94A3B8" stroke-width="1.8" stroke-linecap="round"/>
+    </g>
+    <text x="348" y="321" font-size="15" fill="#94A3B8">Close Menu</text>
+  </g>
+</svg>

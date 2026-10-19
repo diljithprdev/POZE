@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>POZE — animated home background preview</title>
+<style>
+  :root{
+    /* Deep Calm tokens */
+    --icon-bg:#141A22;
+    --home-base:#12161C;
+    --sand:#DCC9A8;
+    --accent:#4E9EA6;
+    --on-accent:#0E131A;
+    --on-surface:#ECE9E2;
+    --on-surface-dim:#A6AFB7;
+    --tertiary:#79828B;
+    --home-body:#C6C2B9;
+    --amber:#D9B36B;
+
+    /* background controls */
+    --tile:46px;
+    --lh:.82;
+    --stroke:1.4px;
+    --sand-opacity:.55;
+    --speed:24s;
+    --scrim:.55;
+
+    --serif:Georgia,"Times New Roman",serif;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#0B0E12;color:var(--on-surface);font-family:var(--sans);padding:28px;display:flex;flex-direction:column;gap:26px;align-items:center}
+  h1{font-family:var(--serif);letter-spacing:.14em;color:var(--sand);font-size:23px;font-weight:700;text-align:center}
+  .cap{font-size:12px;letter-spacing:.12em;color:var(--tertiary);text-transform:uppercase;text-align:center}
+  code{background:#1B2129;border:1px solid rgba(255,255,255,.14);border-radius:6px;padding:1px 6px;font-size:11px}
+
+  .layout{display:flex;gap:30px;flex-wrap:wrap;justify-content:center;align-items:flex-start;width:100%;max-width:1250px}
+
+  /* ---------- animated pattern ---------- */
+  .wave{position:absolute;inset:0;overflow:hidden;background:var(--icon-bg);z-index:0}
+  .wave-track{position:absolute;left:0;top:0;width:100%;will-change:transform;animation:scrollDown var(--speed) linear infinite}
+  @keyframes scrollDown{ from{transform:translateY(-50%)} to{transform:translateY(0)} }
+  .row{display:flex;align-items:center;height:calc(var(--tile) * var(--lh));overflow:visible;white-space:nowrap}
+  .tile{
+    font-family:var(--serif);font-weight:700;font-size:var(--tile);
+    letter-spacing:.08em;line-height:1;white-space:nowrap;
+    color:transparent;-webkit-text-stroke:var(--stroke) var(--sand);
+    opacity:var(--sand-opacity);margin-right:.5em
+  }
+  .wave.extrude .tile{position:relative}
+  .wave.extrude .tile::after{
+    content:"POZE";position:absolute;left:1.5px;top:1.5px;
+    color:transparent;-webkit-text-stroke:calc(var(--stroke) * .8) var(--sand);opacity:.45
+  }
+  .wave.boldline .row.hero .tile{
+    color:var(--sand);-webkit-text-stroke:0;opacity:1;
+    text-shadow:0 3px 0 rgba(0,0,0,.45)
+  }
+  @media (prefers-reduced-motion: reduce){ .wave-track{animation:none} }
+
+  /* ---------- raw stage ---------- */
+  .stage{position:relative;width:620px;max-width:94vw;height:380px;border-radius:20px;overflow:hidden;border:1px solid #232a33;flex:1 1 420px}
+
+  /* ---------- phone mock ---------- */
+  .phone{position:relative;width:372px;height:770px;border-radius:34px;overflow:hidden;border:1px solid #232a33;box-shadow:0 24px 60px rgba(0,0,0,.55);flex:0 0 auto}
+  .scrim{position:absolute;inset:0;background:rgba(18,22,28,var(--scrim));z-index:1;pointer-events:none}
+  .home{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;padding:34px 22px 26px}
+  .brand{display:flex;flex-direction:column;align-items:center;gap:16px}
+  .wordmark{font-family:var(--serif);font-weight:700;color:var(--sand);font-size:44px;letter-spacing:.12em}
+  .rule{width:40px;height:2px;background:var(--accent)}
+  .headline{color:#E9E6DF;font-size:15px;text-align:center;margin-top:2px}
+  .sub{color:var(--on-surface-dim);font-size:12px;text-align:center;line-height:1.4;margin-top:8px}
+  .spacer{flex:1}
+  .perm{background:rgba(27,33,41,.92);border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:14px 12px 14px 16px;display:flex;align-items:center;gap:12px;min-height:72px}
+  .dot{width:10px;height:10px;border-radius:50%;background:var(--amber);flex:0 0 auto}
+  .perm .txt{flex:1}
+  .perm .t{font-size:14px;font-weight:600;color:var(--on-surface)}
+  .perm .s{font-size:12px;color:var(--home-body);margin-top:3px}
+  .grant{background:var(--accent);color:var(--on-accent);font-size:14px;font-weight:600;border:0;border-radius:14px;padding:11px 16px}
+  .cta{margin-top:12px;height:64px;border-radius:32px;background:var(--accent);color:var(--on-accent);display:flex;align-items:center;justify-content:center;gap:12px;font-size:16px;font-weight:600}
+  .cta .tileicon{width:28px;height:28px;border-radius:9px;background:rgba(14,19,26,.85);display:flex;align-items:center;justify-content:center}
+  .hint{margin-top:12px;color:var(--on-surface-dim);font-size:12px;text-align:center;line-height:1.4}
+
+  /* ---------- controls ---------- */
+  .panel{width:330px;flex:0 0 auto;background:#161B22;border:1px solid rgba(255,255,255,.10);border-radius:18px;padding:18px;display:flex;flex-direction:column;gap:15px}
+  .panel h2{font-family:var(--serif);letter-spacing:.1em;color:var(--sand);font-size:15px}
+  .ctl{display:flex;flex-direction:column;gap:6px}
+  .ctl .lab{display:flex;justify-content:space-between;font-size:12px;color:var(--on-surface-dim)}
+  .ctl .lab b{color:var(--on-surface);font-weight:600}
+  input[type=range]{width:100%;accent-color:var(--accent)}
+  .toggles{display:flex;flex-direction:column;gap:10px;margin-top:2px}
+  .toggles label{display:flex;align-items:center;gap:9px;font-size:13px;color:var(--on-surface)}
+  input[type=checkbox]{width:16px;height:16px;accent-color:var(--accent)}
+  .spec{margin-top:4px;font-size:11px;color:var(--tertiary);line-height:1.6;border-top:1px solid rgba(255,255,255,.10);padding-top:12px}
+</style>
+</head>
+<body>
+
+  <h1>Home background — POZE tiles, scrolling down</h1>
+  <div class="cap">192 · circle text &amp; colour · tile <code>#141A22</code> · mark <code>#DCC9A8</code></div>
+
+  <div class="layout">
+
+    <!-- raw pattern -->
+    <div class="stage" id="stage"></div>
+
+    <!-- phone mock -->
+    <div class="phone" id="phone">
+      <div class="scrim"></div>
+      <div class="home">
+        <div class="brand">
+          <div class="wordmark">POZE</div>
+          <div class="rule"></div>
+          <div class="headline">Reference Image Overlay Tool</div>
+          <div class="sub">Float a reference over any app and align your shot.</div>
+        </div>
+        <div class="spacer"></div>
+        <div class="perm">
+          <div class="dot"></div>
+          <div class="txt">
+            <div class="t">Overlay permission</div>
+            <div class="s">Needed to float over other apps</div>
+          </div>
+          <button class="grant">Grant</button>
+        </div>
+        <div class="cta">
+          <span class="tileicon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#DCC9A8" stroke-width="2">
+              <rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.6"/>
+              <path d="M4 17l5-5 4 4 3-3 4 3.5"/>
+            </svg>
+          </span>
+          Select Image
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0E131A" stroke-width="2" opacity=".7">
+            <path d="M9 6l6 6-6 6"/>
+          </svg>
+        </div>
+        <div class="hint">Pick a reference, then drag the bubble over the camera app.</div>
+      </div>
+    </div>
+
+    <!-- controls -->
+    <div class="panel">
+      <h2>Controls</h2>
+
+      <div class="ctl">
+        <div class="lab"><span>Scroll speed (s / loop)</span><b id="vSpeed">24</b></div>
+        <input id="speed" type="range" min="6" max="60" step="1" value="24">
+      </div>
+      <div class="ctl">
+        <div class="lab"><span>Tile size</span><b id="vTile">46</b></div>
+        <input id="tile" type="range" min="20" max="86" step="1" value="46">
+      </div>
+      <div class="ctl">
+        <div class="lab"><span>Row tightness</span><b id="vLh">0.82</b></div>
+        <input id="lh" type="range" min="0.60" max="1.20" step="0.01" value="0.82">
+      </div>
+      <div class="ctl">
+        <div class="lab"><span>Outline weight</span><b id="vStroke">1.4</b></div>
+        <input id="stroke" type="range" min="0.4" max="3" step="0.1" value="1.4">
+      </div>
+      <div class="ctl">
+        <div class="lab"><span>Outline brightness</span><b id="vOp">0.55</b></div>
+        <input id="opacity" type="range" min="0.10" max="1" step="0.01" value="0.55">
+      </div>
+      <div class="ctl">
+        <div class="lab"><span>Scrim over content</span><b id="vScrim">0.55</b></div>
+        <input id="scrim" type="range" min="0" max="0.92" step="0.01" value="0.55">
+      </div>
+
+      <div class="toggles">
+        <label><input id="extrude" type="checkbox" checked> Engraved double outline</label>
+        <label><input id="boldline" type="checkbox"> Bold filled centre line</label>
+        <label><input id="patternOnly" type="checkbox"> Show pattern only (no scrim)</label>
+      </div>
+
+      <div class="spec">
+        Android port: canvas <b>#141A22</b>, glyphs <b>#DCC9A8</b>, serif bold, letter-spacing .08em,
+        row pitch <b>tile × 0.82</b>, outline <b>1.4dp</b>, brightness <b>55%</b>, downward loop.
+      </div>
+    </div>
+
+  </div>
+
+<script>
+  const ROWS = 44;          // rows per block (block is duplicated for a seamless loop)
+  const TILES = 14;         // "POZE" repeats per row (overflows the widest preview)
+
+  function buildWave(host){
+    host.innerHTML = "";
+    const wave = document.createElement("div");
+    wave.className = "wave extrude";
+
+    const track = document.createElement("div");
+    track.className = "wave-track";
+
+    const heroRow = Math.floor(ROWS / 2);
+    for (let copy = 0; copy < 2; copy++) {
+      for (let r = 0; r < ROWS; r++) {
+        const row = document.createElement("div");
+        row.className = "row" + (r === heroRow ? " hero" : "");
+        let html = "";
+        for (let t = 0; t < TILES; t++) html += '<span class="tile">POZE</span>';
+        row.innerHTML = html;
+        track.appendChild(row);
+      }
+    }
+    wave.appendChild(track);
+    host.appendChild(wave);
+    return wave;
+  }
+
+  const stageWave = buildWave(document.getElementById("stage"));
+  const phoneWave = buildWave(document.getElementById("phone"));
+
+  const root = document.documentElement;
+  const el = id => document.getElementById(id);
+
+  function sync(){
+    root.style.setProperty("--speed", el("speed").value + "s");
+    root.style.setProperty("--tile",  el("tile").value + "px");
+    root.style.setProperty("--lh",    el("lh").value);
+    root.style.setProperty("--stroke",el("stroke").value + "px");
+    root.style.setProperty("--sand-opacity", el("opacity").value);
+    root.style.setProperty("--scrim", el("scrim").value);
+    [stageWave, phoneWave].forEach(w=>{
+      w.classList.toggle("extrude", el("extrude").checked);
+      w.classList.toggle("boldline", el("boldline").checked);
+    });
+    document.querySelector(".phone .scrim").style.display =
+      el("patternOnly").checked ? "none" : "block";
+    stageWave.parentElement.classList.toggle("noScrim", el("patternOnly").checked);
+
+    el("vSpeed").textContent = el("speed").value;
+    el("vTile").textContent  = el("tile").value;
+    el("vLh").textContent    = el("lh").value;
+    el("vStroke").textContent= el("stroke").value;
+    el("vOp").textContent    = el("opacity").value;
+    el("vScrim").textContent = el("scrim").value;
+  }
+
+  ["speed","tile","lh","stroke","opacity","scrim","extrude","boldline","patternOnly"]
+    .forEach(id => el(id).addEventListener("input", sync));
+
+  sync();
+</script>
+
+</body>
+</html>
